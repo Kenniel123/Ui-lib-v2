@@ -347,13 +347,15 @@ function library:Dropdown(text, options, callback)
             Size = UDim2.new(1, -10, 0, 30),
             BackgroundColor3 = Theme.Surface,
             BackgroundTransparency = 0.9,
-            Text = opt,
+            Text = tostring(opt),
             Font = Enum.Font.Gotham,
             TextSize = 13,
             TextColor3 = Theme.TextPrimary,
             AutoButtonColor = false,
             ZIndex = 12
         })
+
+        assert(btn:IsA("TextButton"), "Dropdown option is NOT a TextButton")
 
         ApplyCorner(btn, 8)
         local optStroke = ApplyStroke(btn)
@@ -370,7 +372,7 @@ function library:Dropdown(text, options, callback)
 
         btn.MouseButton1Click:Connect(function()
             selected = opt
-            title.Text = text .. " : " .. opt
+            title.Text = text .. " : " .. tostring(opt)
 
             if callback then
                 pcall(callback, opt)
@@ -386,7 +388,7 @@ function library:Dropdown(text, options, callback)
         end)
     end
 
-    for _,opt in ipairs(options) do
+    for _, opt in ipairs(options) do
         createOption(opt)
     end
 
@@ -395,7 +397,7 @@ function library:Dropdown(text, options, callback)
 
     local click = Create("TextButton", {
         Parent = dropdown,
-        Size = UDim2.new(1, 0, 1, 0),
+        Size = UDim2.new(1, 0, 0, 38),
         BackgroundTransparency = 1,
         Text = "",
         ZIndex = 10
@@ -404,7 +406,7 @@ function library:Dropdown(text, options, callback)
     click.MouseButton1Click:Connect(function()
         opened = not opened
 
-        local newSize = opened and (38 + container.Size.Y.Offset) or 38
+        local newSize = opened and (38 + container.AbsoluteSize.Y) or 38
 
         Tween(dropdown, {
             Size = UDim2.new(1, 0, 0, newSize)
