@@ -187,8 +187,10 @@ function library:Button(text, callback)
     end)
 
     button.MouseButton1Click:Connect(function()
-        pcall(callback)
-    end)
+        if callback then
+            pcall(callback)
+        end   
+     end)
 
     return button
 end
@@ -250,7 +252,9 @@ function library:Toggle(text, default, callback)
                 or UDim2.new(0, 2, 0.5, -7)
         })
 
-        pcall(callback, state)
+        if callback then
+            pcall(callback, state)
+        end 
     end
 
     local click = Create("TextButton", {
@@ -328,7 +332,8 @@ function library:Dropdown(text, options, callback)
         Parent = dropdown,
         Position = UDim2.fromOffset(0, 38),
         Size = UDim2.new(1, 0, 0, 0),
-        BackgroundTransparency = 1
+        BackgroundTransparency = 1,
+        ZIndex = 11
     })
 
     local layout = Create("UIListLayout", {
@@ -346,7 +351,8 @@ function library:Dropdown(text, options, callback)
             Font = Enum.Font.Gotham,
             TextSize = 13,
             TextColor3 = Theme.TextPrimary,
-            AutoButtonColor = false
+            AutoButtonColor = false,
+            ZIndex = 12
         })
 
         ApplyCorner(btn, 8)
@@ -365,12 +371,17 @@ function library:Dropdown(text, options, callback)
         btn.MouseButton1Click:Connect(function()
             selected = opt
             title.Text = text .. " : " .. opt
-            callback(opt)
+
+            if callback then
+                pcall(callback, opt)
+            end
 
             opened = false
+
             Tween(dropdown, {
                 Size = UDim2.new(1, 0, 0, 38)
             })
+
             Tween(arrow, {Rotation = 0})
         end)
     end
@@ -382,20 +393,26 @@ function library:Dropdown(text, options, callback)
     task.wait()
     container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
 
-    dropdown.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            opened = not opened
+    local click = Create("TextButton", {
+        Parent = dropdown,
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        Text = "",
+        ZIndex = 10
+    })
 
-            local newSize = opened and (38 + container.Size.Y.Offset) or 38
+    click.MouseButton1Click:Connect(function()
+        opened = not opened
 
-            Tween(dropdown, {
-                Size = UDim2.new(1, 0, 0, newSize)
-            })
+        local newSize = opened and (38 + container.Size.Y.Offset) or 38
 
-            Tween(arrow, {
-                Rotation = opened and 180 or 0
-            })
-        end
+        Tween(dropdown, {
+            Size = UDim2.new(1, 0, 0, newSize)
+        })
+
+        Tween(arrow, {
+            Rotation = opened and 180 or 0
+        })
     end)
 
     return dropdown
@@ -437,7 +454,9 @@ function library:Textbox(text, placeholder, callback)
     })
 
     input.FocusLost:Connect(function()
-        pcall(callback, input.Text)
+        if callback then
+            pcall(callback, input.Text)
+        end
     end)
 
     return input
@@ -489,7 +508,9 @@ function library:Slider(text, min, max, default, callback)
         fill.Size = UDim2.new(percent, 0, 1, 0)
         label.Text = text .. " : " .. value
 
-        callback(value)
+        if callback then
+            pcall(callback, value)
+        end
     end
 
     bar.InputBegan:Connect(function(input)
