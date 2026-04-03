@@ -605,3 +605,5 @@ function library:Notify(title, text, duration)
         notif:Destroy()
     end)
 end
+
+return library
