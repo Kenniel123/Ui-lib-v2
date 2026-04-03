@@ -1,3 +1,5 @@
+-- v.1.1
+
 local library = {}
 library.__index = library
 
@@ -73,7 +75,7 @@ function library:CreateWindow(title)
         Position = UDim2.new(0.5, -310, 0.5, -210),
         BackgroundColor3 = Theme.Background
     })
-    ApplyCorner(main)
+    ApplyCorner(main, 0.03)
     ApplyStroke(main)
 
     -- 🔥 DRAGGING
