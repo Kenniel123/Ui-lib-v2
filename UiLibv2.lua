@@ -731,3 +731,5 @@ function library:LoadConfig(name)
         return HttpService:JSONDecode(readfile(name .. ".json"))
     end
 end
+
+return library
