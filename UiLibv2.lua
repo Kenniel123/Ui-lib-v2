@@ -4,19 +4,21 @@ library.__index = library
 local TweenService = game:GetService("TweenService")
 local UIS = game:GetService("UserInputService")
 
+-- 🔥 THEME (CLEAN BLACK/WHITE)
 local Theme = {
-    Background = Color3.fromRGB(0, 0, 0),
-    Surface = Color3.fromRGB(15, 15, 15),
+    Background = Color3.fromRGB(0,0,0),
+    Surface = Color3.fromRGB(15,15,15),
 
-    Border = Color3.fromRGB(255, 255, 255),
+    Border = Color3.fromRGB(255,255,255),
 
-    TextPrimary = Color3.fromRGB(255, 255, 255),
-    TextSecondary = Color3.fromRGB(200, 200, 200)
+    TextPrimary = Color3.fromRGB(255,255,255),
+    TextSecondary = Color3.fromRGB(200,200,200)
 }
 
+-- CREATE
 local function Create(class, props)
     local obj = Instance.new(class)
-    for i, v in pairs(props) do
+    for i,v in pairs(props) do
         pcall(function()
             obj[i] = v
         end)
@@ -24,21 +26,24 @@ local function Create(class, props)
     return obj
 end
 
+-- 🔥 CORNER (NOT ROUND CIRCLE)
 local function ApplyCorner(obj, scale)
     local c = Instance.new("UICorner")
-    c.CornerRadius = UDim.new(scale or 0.25, 0)
+    c.CornerRadius = UDim.new(scale or 0.07, 0)
     c.Parent = obj
 end
 
+-- 🔥 SOFT OUTLINE
 local function ApplyStroke(obj)
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = Theme.Border
-    stroke.Thickness = 1
-    stroke.Transparency = 0.7
-    stroke.Parent = obj
-    return stroke
+    local s = Instance.new("UIStroke")
+    s.Color = Theme.Border
+    s.Thickness = 1
+    s.Transparency = 0.85
+    s.Parent = obj
+    return s
 end
 
+-- TWEEN
 local function Tween(obj, props, t)
     TweenService:Create(
         obj,
@@ -47,6 +52,7 @@ local function Tween(obj, props, t)
     ):Play()
 end
 
+-- CLICK
 local function SafeClick(obj, cb)
     if obj:IsA("TextButton") then
         obj.MouseButton1Click:Connect(cb)
@@ -67,9 +73,10 @@ function library:CreateWindow(title)
         Position = UDim2.new(0.5, -310, 0.5, -210),
         BackgroundColor3 = Theme.Background
     })
-    ApplyCorner(main, 0.25)
+    ApplyCorner(main)
     ApplyStroke(main)
 
+    -- 🔥 DRAGGING
     do
         local dragging, dragInput, dragStart, startPos
 
@@ -87,14 +94,8 @@ function library:CreateWindow(title)
             end
         end)
 
-        main.InputChanged:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseMovement then
-                dragInput = input
-            end
-        end)
-
         UIS.InputChanged:Connect(function(input)
-            if input == dragInput and dragging then
+            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
                 local delta = input.Position - dragStart
                 main.Position = UDim2.new(
                     startPos.X.Scale,
@@ -106,59 +107,72 @@ function library:CreateWindow(title)
         end)
     end
 
-    local header = Create("TextLabel", {
+    -- 🔥 HEADER FRAME (YOUR REQUEST)
+    local headerFrame = Create("Frame", {
         Parent = main,
         Size = UDim2.new(1, -20, 0, 40),
-        Position = UDim2.fromOffset(10, 0),
+        Position = UDim2.fromOffset(10, 10),
+        BackgroundColor3 = Theme.Surface
+    })
+    ApplyCorner(headerFrame)
+    ApplyStroke(headerFrame)
+
+    local header = Create("TextLabel", {
+        Parent = headerFrame,
+        Size = UDim2.new(1, -16, 1, 0),
+        Position = UDim2.fromOffset(8, 0),
         BackgroundTransparency = 1,
         Text = title or "My Hub",
         Font = Enum.Font.GothamBold,
-        TextSize = 16,
+        TextSize = 15,
         TextColor3 = Theme.TextPrimary,
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
+    -- 🔥 SIDEBAR (MOVED DOWN)
     local sidebar = Create("Frame", {
         Parent = main,
-        Position = UDim2.fromOffset(10, 40),
-        Size = UDim2.fromOffset(160, 370),
+        Position = UDim2.fromOffset(10, 60),
+        Size = UDim2.fromOffset(160, 350),
         BackgroundColor3 = Theme.Surface
     })
-    ApplyCorner(sidebar, 0.25)
+    ApplyCorner(sidebar)
     ApplyStroke(sidebar)
 
-    local mainTabButton = Create("TextButton", {
+    -- 🔥 MAIN TAB BUTTON
+    local mainTab = Create("TextButton", {
         Parent = sidebar,
-        Size = UDim2.new(1, -10, 0, 32),
+        Size = UDim2.new(1, -10, 0, 30),
         Position = UDim2.fromOffset(5, 5),
-        BackgroundColor3 = Theme.Background,
+        BackgroundColor3 = Theme.Surface,
         Text = "Main",
         Font = Enum.Font.GothamBold,
         TextSize = 14,
         TextColor3 = Theme.TextPrimary,
         AutoButtonColor = false
     })
-    ApplyCorner(mainTabButton, 0.3)
-    ApplyStroke(mainTabButton)
+    ApplyCorner(mainTab)
+    ApplyStroke(mainTab)
 
+    -- 🔍 SEARCH (UNDER MAIN TAB)
     local search = Create("TextBox", {
         Parent = sidebar,
-        Size = UDim2.new(1, -10, 0, 30),
-        Position = UDim2.fromOffset(5, 42),
+        Size = UDim2.new(1, -10, 0, 28),
+        Position = UDim2.fromOffset(5, 40),
         PlaceholderText = "Search...",
-        Text = "",
         BackgroundColor3 = Theme.Background,
         TextColor3 = Theme.TextPrimary,
         Font = Enum.Font.Gotham,
         TextSize = 13
     })
-    ApplyCorner(search, 0.3)
+    ApplyCorner(search)
     ApplyStroke(search)
 
+    -- 🔥 TAB HOLDER (NO CORNER)
     local tabHolder = Create("Frame", {
         Parent = sidebar,
-        Position = UDim2.fromOffset(0, 80),
-        Size = UDim2.new(1, 0, 1, -80),
+        Position = UDim2.fromOffset(0, 75),
+        Size = UDim2.new(1, 0, 1, -75),
         BackgroundTransparency = 1
     })
 
@@ -167,19 +181,18 @@ function library:CreateWindow(title)
         Padding = UDim.new(0, 6)
     })
 
+    -- 🔥 CONTENT
     local content = Create("Frame", {
         Parent = main,
-        Position = UDim2.fromOffset(180, 50),
-        Size = UDim2.new(1, -190, 1, -60),
+        Position = UDim2.fromOffset(180, 60),
+        Size = UDim2.new(1, -190, 1, -70),
         BackgroundTransparency = 1
     })
 
     self.Gui = gui
-    self.Main = main
     self.Sidebar = tabHolder
     self.Content = content
     self.Tabs = {}
-    self.MainTabButton = mainTabButton
 
     return self
 end
@@ -188,11 +201,11 @@ function library:CreateTab(name)
     local page = Create("Frame", {
         Parent = self.Content,
         Size = UDim2.new(1, 0, 1, 0),
-        Visible = false,
-        BackgroundTransparency = 1
+        BackgroundTransparency = 1,
+        Visible = false
     })
 
-    -- 🔥 CLEAN SPACING FOR COMPONENTS
+    -- 🔥 CLEAN SPACING (fix ugly cramped look)
     Create("UIListLayout", {
         Parent = page,
         Padding = UDim.new(0, 10)
@@ -208,23 +221,22 @@ function library:CreateTab(name)
     -- 🔥 TAB BUTTON
     local button = Create("TextButton", {
         Parent = self.Sidebar,
-        Size = UDim2.new(1, -10, 0, 32),
-        BackgroundColor3 = Theme.Background,
+        Size = UDim2.new(1, -10, 0, 30),
+        BackgroundColor3 = Theme.Surface,
         Text = name,
         Font = Enum.Font.GothamBold,
         TextSize = 14,
         TextColor3 = Theme.TextSecondary,
         AutoButtonColor = false
     })
-    ApplyCorner(button, 0.3)
+    ApplyCorner(button)
     local stroke = ApplyStroke(button)
 
-    -- 🔥 TAB SWITCHING
+    -- 🔥 SWITCHING
     SafeClick(button, function()
         for _, t in pairs(self.Tabs) do
             t.Page.Visible = false
             Tween(t.Button, {
-                BackgroundColor3 = Theme.Background,
                 TextColor3 = Theme.TextSecondary
             })
         end
@@ -232,7 +244,6 @@ function library:CreateTab(name)
         page.Visible = true
 
         Tween(button, {
-            BackgroundColor3 = Theme.Surface,
             TextColor3 = Theme.TextPrimary
         })
     end)
@@ -242,10 +253,9 @@ function library:CreateTab(name)
         Page = page
     })
 
-    -- FIRST TAB AUTO SELECT
+    -- FIRST TAB AUTO
     if #self.Tabs == 1 then
         page.Visible = true
-        button.BackgroundColor3 = Theme.Surface
         button.TextColor3 = Theme.TextPrimary
     end
 
@@ -258,16 +268,15 @@ end
 function library:Button(text, callback)
     local btn = Create("TextButton", {
         Parent = self.Container,
-        Size = UDim2.new(1, 0, 0, 38),
+        Size = UDim2.new(1, 0, 0, 36),
         BackgroundColor3 = Theme.Surface,
-        Text = "",
-        AutoButtonColor = false
+        AutoButtonColor = false,
+        Text = ""
     })
-
-    ApplyCorner(btn, 0.3)
+    ApplyCorner(btn)
     local stroke = ApplyStroke(btn)
 
-    -- 🔥 TEXT WITH LEFT PADDING
+    -- 🔥 LABEL (PROPER PADDING)
     local label = Create("TextLabel", {
         Parent = btn,
         Size = UDim2.new(1, -16, 1, 0),
@@ -280,13 +289,13 @@ function library:Button(text, callback)
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
-    -- 🔥 HOVER EFFECT
+    -- 🔥 HOVER (makes outline visible)
     btn.MouseEnter:Connect(function()
-        Tween(stroke, {Transparency = 0.4})
+        Tween(stroke, {Transparency = 0.5})
     end)
 
     btn.MouseLeave:Connect(function()
-        Tween(stroke, {Transparency = 0.7})
+        Tween(stroke, {Transparency = 0.85})
     end)
 
     SafeClick(btn, function()
@@ -299,16 +308,15 @@ function library:Toggle(text, default, callback)
 
     local frame = Create("Frame", {
         Parent = self.Container,
-        Size = UDim2.new(1, 0, 0, 38),
+        Size = UDim2.new(1, 0, 0, 36),
         BackgroundColor3 = Theme.Surface
     })
-    ApplyCorner(frame, 0.3)
+    ApplyCorner(frame)
     local stroke = ApplyStroke(frame)
 
-    -- 🔥 LABEL (PADDED + BOLD)
     local label = Create("TextLabel", {
         Parent = frame,
-        Size = UDim2.new(1, -70, 1, 0),
+        Size = UDim2.new(1, -60, 1, 0),
         Position = UDim2.fromOffset(8, 0),
         BackgroundTransparency = 1,
         Text = text,
@@ -318,7 +326,7 @@ function library:Toggle(text, default, callback)
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
-    -- 🔥 TOGGLE BG (WHITE STYLE)
+    -- 🔥 TOGGLE BG
     local toggle = Create("Frame", {
         Parent = frame,
         Size = UDim2.fromOffset(40, 18),
@@ -353,7 +361,6 @@ function library:Toggle(text, default, callback)
         end
     end
 
-    -- 🔥 CLICK LAYER
     local click = Create("TextButton", {
         Parent = frame,
         Size = UDim2.new(1,0,1,0),
@@ -367,11 +374,11 @@ function library:Toggle(text, default, callback)
 
     -- 🔥 HOVER
     frame.MouseEnter:Connect(function()
-        Tween(stroke, {Transparency = 0.4})
+        Tween(stroke, {Transparency = 0.5})
     end)
 
     frame.MouseLeave:Connect(function()
-        Tween(stroke, {Transparency = 0.7})
+        Tween(stroke, {Transparency = 0.85})
     end)
 
     return {
@@ -463,11 +470,11 @@ function library:Dropdown(text, options, callback)
 
     local frame = Create("Frame", {
         Parent = self.Container,
-        Size = UDim2.new(1, 0, 0, 38),
+        Size = UDim2.new(1, 0, 0, 36),
         BackgroundColor3 = Theme.Surface,
         ClipsDescendants = true
     })
-    ApplyCorner(frame, 0.3)
+    ApplyCorner(frame)
     local stroke = ApplyStroke(frame)
 
     local label = Create("TextLabel", {
@@ -494,7 +501,7 @@ function library:Dropdown(text, options, callback)
 
     local container = Create("Frame", {
         Parent = frame,
-        Position = UDim2.fromOffset(0,38),
+        Position = UDim2.fromOffset(0,36),
         Size = UDim2.new(1,0,0,0),
         BackgroundTransparency = 1
     })
@@ -504,11 +511,11 @@ function library:Dropdown(text, options, callback)
         Padding = UDim.new(0,6)
     })
 
-    -- 🔥 OPTIONS
+    -- OPTIONS
     local function make(opt)
         local btn = Create("TextButton", {
             Parent = container,
-            Size = UDim2.new(1, -10, 0, 30),
+            Size = UDim2.new(1, -10, 0, 28),
             Position = UDim2.fromOffset(5,0),
             BackgroundColor3 = Theme.Background,
             Text = tostring(opt),
@@ -517,15 +524,15 @@ function library:Dropdown(text, options, callback)
             TextColor3 = Theme.TextPrimary,
             AutoButtonColor = false
         })
-        ApplyCorner(btn, 0.3)
+        ApplyCorner(btn)
         local s = ApplyStroke(btn)
 
         btn.MouseEnter:Connect(function()
-            Tween(s, {Transparency = 0.4})
+            Tween(s, {Transparency = 0.5})
         end)
 
         btn.MouseLeave:Connect(function()
-            Tween(s, {Transparency = 0.7})
+            Tween(s, {Transparency = 0.85})
         end)
 
         SafeClick(btn, function()
@@ -537,7 +544,7 @@ function library:Dropdown(text, options, callback)
             end
 
             opened = false
-            Tween(frame, {Size = UDim2.new(1,0,0,38)})
+            Tween(frame, {Size = UDim2.new(1,0,0,36)})
             Tween(arrow, {Rotation = 0})
         end)
     end
@@ -550,10 +557,9 @@ function library:Dropdown(text, options, callback)
         container.Size = UDim2.new(1,0,0,layout.AbsoluteContentSize.Y)
     end)
 
-    -- 🔥 CLICK TO OPEN
     local click = Create("TextButton", {
         Parent = frame,
-        Size = UDim2.new(1,0,0,38),
+        Size = UDim2.new(1,0,0,36),
         BackgroundTransparency = 1,
         Text = ""
     })
@@ -561,10 +567,10 @@ function library:Dropdown(text, options, callback)
     SafeClick(click, function()
         opened = not opened
 
-        local sizeY = 38 + container.AbsoluteSize.Y
+        local sizeY = 36 + container.AbsoluteSize.Y
 
         Tween(frame, {
-            Size = opened and UDim2.new(1,0,0,sizeY) or UDim2.new(1,0,0,38)
+            Size = opened and UDim2.new(1,0,0,sizeY) or UDim2.new(1,0,0,36)
         })
 
         Tween(arrow, {Rotation = opened and 180 or 0})
@@ -576,13 +582,12 @@ end
 function library:Textbox(text, placeholder, callback)
     local frame = Create("Frame", {
         Parent = self.Container,
-        Size = UDim2.new(1, 0, 0, 38),
+        Size = UDim2.new(1, 0, 0, 36),
         BackgroundColor3 = Theme.Surface
     })
-    ApplyCorner(frame, 0.3)
+    ApplyCorner(frame)
     local stroke = ApplyStroke(frame)
 
-    -- 🔥 LABEL
     local label = Create("TextLabel", {
         Parent = frame,
         Size = UDim2.new(0.4, 0, 1, 0),
@@ -595,11 +600,10 @@ function library:Textbox(text, placeholder, callback)
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
-    -- 🔥 INPUT
     local box = Create("TextBox", {
         Parent = frame,
-        Size = UDim2.new(0.6, -16, 1, -12),
-        Position = UDim2.new(0.4, 8, 0, 6),
+        Size = UDim2.new(0.6, -16, 1, -10),
+        Position = UDim2.new(0.4, 8, 0, 5),
         BackgroundColor3 = Theme.Background,
         Text = "",
         PlaceholderText = placeholder or "",
@@ -608,7 +612,7 @@ function library:Textbox(text, placeholder, callback)
         TextColor3 = Theme.TextPrimary,
         ClearTextOnFocus = false
     })
-    ApplyCorner(box, 0.3)
+    ApplyCorner(box)
     ApplyStroke(box)
 
     box.FocusLost:Connect(function()
@@ -617,13 +621,12 @@ function library:Textbox(text, placeholder, callback)
         end
     end)
 
-    -- 🔥 HOVER
     frame.MouseEnter:Connect(function()
-        Tween(stroke, {Transparency = 0.4})
+        Tween(stroke, {Transparency = 0.5})
     end)
 
     frame.MouseLeave:Connect(function()
-        Tween(stroke, {Transparency = 0.7})
+        Tween(stroke, {Transparency = 0.85})
     end)
 
     return box
@@ -652,7 +655,7 @@ function library:Notify(title, text, duration)
         Size = UDim2.new(1,0,0,0),
         BackgroundColor3 = Theme.Surface
     })
-    ApplyCorner(notif, 0.3)
+    ApplyCorner(notif)
     ApplyStroke(notif)
 
     local t = Create("TextLabel", {
@@ -680,7 +683,6 @@ function library:Notify(title, text, duration)
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
-    -- 🔥 SLIDE IN EFFECT
     Tween(notif, {Size = UDim2.new(1,0,0,70)}, 0.25)
 
     task.delay(duration, function()
