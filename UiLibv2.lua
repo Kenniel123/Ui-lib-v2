@@ -15,12 +15,19 @@ local Theme = {
     TextSecondary = Color3.fromRGB(160, 160, 170)
 }
 
-
 local function Create(class, props)
     local obj = Instance.new(class)
-    for i,v in pairs(props) do
-        obj[i] = v
+
+    for i, v in pairs(props) do
+        local success, err = pcall(function()
+            obj[i] = v
+        end)
+
+        if not success then
+            warn("[UI LIB ERROR] Failed to set:", i, "on", class, err)
+        end
     end
+
     return obj
 end
 
@@ -37,6 +44,14 @@ local function ApplyStroke(obj, color)
     stroke.Thickness = 1
     stroke.Parent = obj
     return stroke
+end
+
+local function SafeClick(obj, callback)
+    if obj:IsA("TextButton") or obj:IsA("ImageButton") then
+        obj.MouseButton1Click:Connect(callback)
+    else
+        warn("[UI LIB] Tried to click non-button:", obj:GetFullName(), obj.ClassName)
+    end
 end
 
 local function Tween(obj, props, time)
@@ -91,14 +106,16 @@ function library:CreateWindow(title)
         BackgroundTransparency = 1
     })
 
-    local layout = Create("UIListLayout", {
+    Create("UIListLayout", {
         Parent = container,
         Padding = UDim.new(0, 8),
         SortOrder = Enum.SortOrder.LayoutOrder
     })
 
     do
-        local dragging, dragStart, startPos
+        local dragging = false
+        local dragStart
+        local startPos
 
         header.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -117,9 +134,8 @@ function library:CreateWindow(title)
         UIS.InputChanged:Connect(function(input)
             if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
                 local delta = input.Position - dragStart
-                Tween(main, {
-                    Position = startPos + UDim2.fromOffset(delta.X, delta.Y)
-                }, 0.05)
+
+                main.Position = startPos + UDim2.fromOffset(delta.X, delta.Y)
             end
         end)
     end
@@ -157,44 +173,31 @@ function library:Button(text, callback)
     })
 
     button.MouseEnter:Connect(function()
-        Tween(button, {
-            BackgroundTransparency = 0.85
-        })
-        Tween(stroke, {
-            Color = Theme.Accent
-        })
+        Tween(button, {BackgroundTransparency = 0.85})
+        Tween(stroke, {Color = Theme.Accent})
     end)
 
     button.MouseLeave:Connect(function()
-        Tween(button, {
-            BackgroundTransparency = 0.9
-        })
-        Tween(stroke, {
-            Color = Theme.Border
-        })
+        Tween(button, {BackgroundTransparency = 0.9})
+        Tween(stroke, {Color = Theme.Border})
     end)
 
     button.MouseButton1Down:Connect(function()
-        Tween(button, {
-            BackgroundTransparency = 0.75
-        }, 0.1)
+        Tween(button, {BackgroundTransparency = 0.75}, 0.1)
     end)
 
     button.MouseButton1Up:Connect(function()
-        Tween(button, {
-            BackgroundTransparency = 0.85
-        }, 0.1)
+        Tween(button, {BackgroundTransparency = 0.85}, 0.1)
     end)
 
-    button.MouseButton1Click:Connect(function()
+    SafeClick(button, function()
         if callback then
             pcall(callback)
-        end   
-     end)
+        end
+    end)
 
     return button
 end
-
 
 function library:Toggle(text, default, callback)
     local state = default or false
@@ -254,7 +257,7 @@ function library:Toggle(text, default, callback)
 
         if callback then
             pcall(callback, state)
-        end 
+        end
     end
 
     local click = Create("TextButton", {
@@ -264,7 +267,7 @@ function library:Toggle(text, default, callback)
         Text = ""
     })
 
-    click.MouseButton1Click:Connect(function()
+    SafeClick(click, function()
         setState(not state)
     end)
 
@@ -341,6 +344,7 @@ function library:Dropdown(text, options, callback)
         Padding = UDim.new(0, 6)
     })
 
+    -- CREATE OPTIONS
     local function createOption(opt)
         local btn = Create("TextButton", {
             Parent = container,
@@ -355,8 +359,6 @@ function library:Dropdown(text, options, callback)
             ZIndex = 12
         })
 
-        assert(btn:IsA("TextButton"), "Dropdown option is NOT a TextButton")
-
         ApplyCorner(btn, 8)
         local optStroke = ApplyStroke(btn)
 
@@ -370,7 +372,7 @@ function library:Dropdown(text, options, callback)
             Tween(optStroke, {Color = Theme.Border})
         end)
 
-        btn.MouseButton1Click:Connect(function()
+        SafeClick(btn, function()
             selected = opt
             title.Text = text .. " : " .. tostring(opt)
 
@@ -392,8 +394,10 @@ function library:Dropdown(text, options, callback)
         createOption(opt)
     end
 
-    task.wait()
-    container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
+    -- FIX SIZE (NO MORE BUG)
+    task.defer(function()
+        container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
+    end)
 
     local click = Create("TextButton", {
         Parent = dropdown,
@@ -403,7 +407,7 @@ function library:Dropdown(text, options, callback)
         ZIndex = 10
     })
 
-    click.MouseButton1Click:Connect(function()
+    SafeClick(click, function()
         opened = not opened
 
         local newSize = opened and (38 + container.AbsoluteSize.Y) or 38
@@ -584,7 +588,7 @@ function library:CreateTab(name)
         Visible = false
     })
 
-    local layout = Create("UIListLayout", {
+    Create("UIListLayout", {
         Parent = page,
         Padding = UDim.new(0, 8)
     })
@@ -593,8 +597,8 @@ function library:CreateTab(name)
     tab.Container = page
     tab.Main = self.Main
 
-    tabButton.MouseButton1Click:Connect(function()
-        for _,t in pairs(self.Tabs) do
+    SafeClick(tabButton, function()
+        for _, t in pairs(self.Tabs) do
             t.Page.Visible = false
             Tween(t.Button, {BackgroundTransparency = 0.9})
             Tween(t.Button, {TextColor3 = Theme.TextSecondary})
@@ -610,8 +614,11 @@ function library:CreateTab(name)
         Page = page
     })
 
+    -- AUTO SELECT FIRST TAB (FIXED)
     if #self.Tabs == 1 then
-        tabButton:MouseButton1Click()
+        page.Visible = true
+        tabButton.BackgroundTransparency = 0.7
+        tabButton.TextColor3 = Theme.TextPrimary
     end
 
     return tab
@@ -644,9 +651,9 @@ function library:Notify(title, text, duration)
     })
 
     ApplyCorner(notif, 8)
-    local stroke = ApplyStroke(notif)
+    ApplyStroke(notif)
 
-    local titleLabel = Create("TextLabel", {
+    Create("TextLabel", {
         Parent = notif,
         Size = UDim2.new(1, -20, 0, 20),
         Position = UDim2.fromOffset(10, 8),
@@ -658,7 +665,7 @@ function library:Notify(title, text, duration)
         TextXAlignment = Enum.TextXAlignment.Left
     })
 
-    local desc = Create("TextLabel", {
+    Create("TextLabel", {
         Parent = notif,
         Size = UDim2.new(1, -20, 0, 40),
         Position = UDim2.fromOffset(10, 28),
@@ -698,14 +705,14 @@ function library:DisableBlur()
 end
 
 function library:SetTheme(newTheme)
-    for k,v in pairs(newTheme) do
+    for k, v in pairs(newTheme) do
         Theme[k] = v
     end
 
-    for _,obj in pairs(self.Gui:GetDescendants()) do
+    for _, obj in pairs(self.Gui:GetDescendants()) do
         if obj:IsA("Frame") then
             obj.BackgroundColor3 = Theme.Surface
-        elseif obj:IsA("TextLabel") then
+        elseif obj:IsA("TextLabel") or obj:IsA("TextBox") then
             obj.TextColor3 = Theme.TextPrimary
         elseif obj:IsA("UIStroke") then
             obj.Color = Theme.Border
@@ -724,5 +731,3 @@ function library:LoadConfig(name)
         return HttpService:JSONDecode(readfile(name .. ".json"))
     end
 end
-
-return library
