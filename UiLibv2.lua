@@ -1,4 +1,5 @@
--- Axon Ui Lib v2
+-- Axon Ui Lib v3
+--Welcome mate if you're using this ui atleast advertise my script https://discord.gg/88gR5XUpkC thank u
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     local str = ""
@@ -105,6 +106,8 @@ _G.Success = Color3.fromRGB(34, 197, 94)
 _G.Warning = Color3.fromRGB(245, 158, 11)
 _G.Error = Color3.fromRGB(239, 68, 68)
 _G.GlassTransparency = 0.15  
+
+local library = {}
 
 IKAI = true
 if IKAI then
@@ -370,8 +373,6 @@ if IKAI then
         return result
     end
 
-    library = {}
-    
     function library:Window(text, logo, keybind, gradientText, accentColor)
 		if accentColor then _G.Accent = accentColor end
         local uihide = false
