@@ -1,5 +1,3 @@
---HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     local str = ""
