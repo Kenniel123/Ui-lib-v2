@@ -1,4 +1,5 @@
---Welcome mate if you're using this ui atleast advertise my script https://discord.gg/88gR5XUpkC thank u
+--HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     local str = ""
