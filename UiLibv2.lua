@@ -1,3 +1,4 @@
+-- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
 local plr = game:GetService("Players")
@@ -1573,6 +1574,12 @@ function Library:CreateTab(name, icon)
     end
 
     return tabMethods
+end
+
+-- Backward compatibility: CreateSection now just returns self so old code works
+function Library:CreateSection(name)
+    -- Sections are deprecated - this just returns self for backward compatibility
+    return self
 end
 
 
