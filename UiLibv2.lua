@@ -1,4 +1,4 @@
--- v4 
+-- v5
 -- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
@@ -22,8 +22,8 @@ local c = {
     SurfaceHover = Color3.fromRGB(30, 30, 35),
     Toggle = {
         Enabled = Color3.fromRGB(99, 138, 255),
-        Disabled = Color3.fromRGB(255, 255, 255),
-        Circle = Color3.fromRGB(255, 255, 255)
+        Disabled = Color3.fromRGB(38, 38, 42),
+        Circle = Color3.fromRGB(25, 25, 28)
     },
     Notification = {
         Background = Color3.fromRGB(14, 14, 17),
@@ -1902,6 +1902,7 @@ function Library._CreateToggle(tab, config)
     local switchBg = CreateInstance("Frame", {
         Name = "SwitchBackground",
         BackgroundColor3 = enabled and c.Toggle.Enabled or c.Toggle.Disabled,
+        BackgroundTransparency = 0,
         Position = UDim2.new(1, -50, 0.5, -10),
         BorderSizePixel = 0,
         Size = UDim2.new(0, s.Toggle.Width, 0, s.Toggle.Height),
@@ -1915,6 +1916,7 @@ function Library._CreateToggle(tab, config)
         AnchorPoint = Vector2.new(0, 0.5),
         Position = enabled and UDim2.new(0, 22, 0.5, 0) or UDim2.new(0, 4, 0.5, 0),
         BorderSizePixel = 0,
+        BackgroundTransparency = 0,
         Size = UDim2.new(0, s.Toggle.Circle, 0, s.Toggle.Circle),
         Parent = switchBg
     })
