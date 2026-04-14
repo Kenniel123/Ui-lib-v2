@@ -1,3 +1,4 @@
+-- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
 local plr = game:GetService("Players")
@@ -9,26 +10,34 @@ local hs = game:GetService("HttpService")
 local n = "Acrylic"
 
 local c = {
-    Background = Color3.fromRGB(12, 12, 12),
-    Secondary = Color3.fromRGB(20, 20, 20),
-    Border = Color3.fromRGB(39, 39, 39),
-    Text = Color3.fromRGB(255, 255, 255),
-    TextDark = Color3.fromRGB(93, 93, 93),
-    TextFade = Color3.fromRGB(9, 9, 9),
-    Accent = Color3.fromRGB(255, 255, 255),
+    Background = Color3.fromRGB(15, 8, 25),
+    Secondary = Color3.fromRGB(22, 12, 35),
+    Border = Color3.fromRGB(45, 25, 70),
+    Text = Color3.fromRGB(240, 230, 255),
+    TextDark = Color3.fromRGB(130, 100, 170),
+    TextFade = Color3.fromRGB(15, 10, 25),
+    Accent = Color3.fromRGB(160, 100, 255),
     Toggle = {
-        Enabled = Color3.fromRGB(255, 255, 255),
-        Disabled = Color3.fromRGB(32, 32, 32),
-        Circle = Color3.fromRGB(20, 20, 20)
+        Enabled = Color3.fromRGB(160, 100, 255),
+        Disabled = Color3.fromRGB(35, 20, 55),
+        Circle = Color3.fromRGB(22, 12, 35)
     },
     Notification = {
-        Background = Color3.fromRGB(11, 11, 11),
-        Border = Color3.fromRGB(26, 26, 26),
-        Timer = Color3.fromRGB(255, 255, 255)
+        Background = Color3.fromRGB(15, 8, 25),
+        Border = Color3.fromRGB(45, 25, 70),
+        Timer = Color3.fromRGB(160, 100, 255)
     }
 }
 
 local ThemePresets = {
+    Galaxy = {
+        Background = Color3.fromRGB(15, 8, 25),
+        Secondary = Color3.fromRGB(22, 12, 35),
+        Border = Color3.fromRGB(45, 25, 70),
+        Text = Color3.fromRGB(240, 230, 255),
+        TextDark = Color3.fromRGB(130, 100, 170),
+        Accent = Color3.fromRGB(160, 100, 255)
+    },
     Dark = {
         Background = Color3.fromRGB(12, 12, 12),
         Secondary = Color3.fromRGB(20, 20, 20),
@@ -819,14 +828,35 @@ function Library:_CreateMainv0rtexd()
         ClipsDescendants = false,
         Parent = self.screenGui
     })
-    CreateCorner(self.container, 5)
-    CreateStroke(self.container)
+    CreateCorner(self.container, 8)
+    CreateStroke(self.container, c.Border)
+
+    -- Add Galaxy gradient overlay to main container
+    local containerGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 10, 35)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 8, 25)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 12, 40))
+        }),
+        Rotation = 45,
+        Parent = self.container
+    })
 
     self.topBar = CreateInstance("Frame", {
         Name = "TopBar",
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 45),
         Parent = self.container
+    })
+
+    -- Add gradient to top bar
+    local topBarGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 15, 50)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 8, 25))
+        }),
+        Rotation = 90,
+        Parent = self.topBar
     })
 
     self.titleLabel = CreateInstance("TextLabel", {
@@ -1390,98 +1420,196 @@ function Library:SetAutoSave(enabled)
     end
 end
 
-function Library:CreateSection(name)
-    local section = {
+function Library:CreateTab(name)
+    local tab = {
         name = name,
-        tabs = {},
-        expanded = true,
+        elements = {},
         _library = self
     }
 
-    local sectionFrame = CreateInstance("Frame", {
-        Name = "Section_" .. name,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -10, 0, 0),
-        AutomaticSize = Enum.AutomaticSize.Y,
-        Parent = self.sectionsContainer
-    })
-    CreateListLayout(sectionFrame, 2, Enum.SortOrder.LayoutOrder)
-
-    local headerContainer = CreateInstance("Frame", {
-        Name = "HeaderContainer",
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 25),
-        LayoutOrder = 0,
-        Parent = sectionFrame
-    })
-
-    local headerBtn = CreateInstance("TextButton", {
-        Name = "Header",
-        FontFace = f.Regular,
-        TextColor3 = c.TextDark,
-        Text = "",
+    local tabBtn = CreateInstance("Frame", {
+        Name = name,
+        BackgroundColor3 = c.Secondary,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
-        Size = UDim2.new(1, 0, 1, 0),
-        Parent = headerContainer
+        Size = UDim2.new(1, -10, 0, s.Tab.Height),
+        Parent = self.sectionsContainer
+    })
+    CreateCorner(tabBtn, 6)
+
+    local tabStroke = CreateStroke(tabBtn, c.Border, 1)
+
+    -- Add subtle gradient to tab button
+    local tabGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 15, 50)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 12, 35))
+        }),
+        Rotation = 90,
+        Parent = tabBtn
     })
 
-    local headerLabel = CreateInstance("TextLabel", {
-        Name = "Label",
+    local iconLabel = CreateInstance("ImageLabel", {
+        Name = "Icon",
+        BackgroundTransparency = 1,
+        Image = "rbxassetid://112235310154264",
+        ImageColor3 = c.TextDark,
+        AnchorPoint = Vector2.new(0, 0.5),
+        Position = UDim2.new(0, 11, 0.5, 0),
+        Size = UDim2.new(0, 15, 0, 15),
+        Parent = tabBtn
+    })
+
+    local tabText = CreateInstance("TextLabel", {
+        Name = "TabText",
         FontFace = f.Regular,
         TextColor3 = c.TextDark,
         Text = name,
         TextXAlignment = Enum.TextXAlignment.Left,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 5, 0, 0),
+        Position = UDim2.new(0, 33, 0, 0),
+        Size = UDim2.new(1, -42, 1, 0),
         TextSize = textsize.Small,
-        Size = UDim2.new(1, -25, 1, 0),
-        Parent = headerContainer
+        Parent = tabBtn
     })
 
-    local arrow = CreateInstance("ImageButton", {
-        Name = "Arrow",
-        Image = "rbxassetid://105558791071013",
-        ImageColor3 = c.TextDark,
+    CreateInstance("UIPadding", {
+        PaddingRight = UDim.new(0, 9),
+        Parent = tabText
+    })
+
+    local textGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, c.TextDark),
+            ColorSequenceKeypoint.new(0.65, c.TextDark),
+            ColorSequenceKeypoint.new(1, c.TextFade)
+        }),
+        Parent = tabText
+    })
+
+    local clickBtn = CreateInstance("TextButton", {
+        Name = "ClickButton",
+        Text = "",
         BackgroundTransparency = 1,
-        Position = UDim2.new(1, -20, 0.5, -7),
-        Size = UDim2.new(0, 15, 0, 15),
-        Rotation = 0,
-        Parent = headerContainer
+        Size = UDim2.new(1, 0, 1, 0),
+        Parent = tabBtn
     })
 
-    local tabsContainer = CreateInstance("Frame", {
-        Name = "TabsContainer",
+    tab.content = CreateInstance("Frame", {
+        Name = name .. "_Content",
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 0),
         AutomaticSize = Enum.AutomaticSize.Y,
-        ClipsDescendants = true,
-        LayoutOrder = 1,
-        Parent = sectionFrame
+        Visible = false,
+        Parent = self.contentContainer
     })
-    CreateListLayout(tabsContainer, 2, Enum.SortOrder.LayoutOrder)
-    CreatePadding(tabsContainer, 0, 0, 15, 0)
+    CreateListLayout(tab.content, 8, Enum.SortOrder.LayoutOrder)
+    CreatePadding(tab.content, 10, 10, 15, 15)
 
-    local function ToggleSection()
-        section.expanded = not section.expanded
-        CreateTween(arrow, {Rotation = section.expanded and 0 or 180}, animationspeed.Normal)
-        tabsContainer.Visible = section.expanded
+    clickBtn.MouseButton1Click:Connect(function()
+        Library._SelectTab(self, tab, tabBtn, tabStroke, iconLabel, tabText, textGradient)
+    end)
+
+    clickBtn.MouseEnter:Connect(function()
+        if self.currentTab ~= tab then
+            CreateTween(tabBtn, {BackgroundTransparency = 0.7}, animationspeed.Fast)
+        end
+    end)
+
+    clickBtn.MouseLeave:Connect(function()
+        if self.currentTab ~= tab then
+            CreateTween(tabBtn, {BackgroundTransparency = 1}, animationspeed.Fast)
+        end
+    end)
+
+    tab.button = tabBtn
+    tab.stroke = tabStroke
+    tab.icon = iconLabel
+    tab.textLabel = tabText
+    tab.textGradient = textGradient
+    tab._library = self
+
+    table.insert(self.sections, tab)
+
+    if not self.currentTab then
+        Library._SelectTab(self, tab, tabBtn, tabStroke, iconLabel, tabText, textGradient)
     end
 
-    headerBtn.MouseButton1Click:Connect(ToggleSection)
-    arrow.MouseButton1Click:Connect(ToggleSection)
+    local tabMethods = setmetatable({}, {__index = tab})
 
-    section.frame = sectionFrame
-    section.tabsContainer = tabsContainer
-    table.insert(self.sections, section)
-
-    local sectionMethods = setmetatable({}, {__index = section})
-
-    function sectionMethods:CreateTab(tabName, icon)
-        return Library._CreateTab(self, tabName, icon)
+    -- Helper to register element for search
+    local function registerElement(elemName, elemType)
+        table.insert(self._allElements, {
+            name = elemName,
+            type = elemType,
+            tabName = name,
+            selectTab = function()
+                Library._SelectTab(self, tab, tabBtn, tabStroke, iconLabel, tabText, textGradient)
+            end
+        })
     end
 
-    return sectionMethods
+    function tabMethods:CreateSection(sectionName)
+        return Library._CreateContentSection(self, sectionName)
+    end
+
+    function tabMethods:CreateParagraph(config)
+        registerElement(config.Title or "Paragraph", "Paragraph")
+        return Library._CreateParagraph(self, config)
+    end
+
+    function tabMethods:CreateSlider(config)
+        registerElement(config.Name or "Slider", "Slider")
+        return Library._CreateSlider(self, config)
+    end
+
+    function tabMethods:CreateButton(config)
+        registerElement(config.Name or "Button", "Button")
+        return Library._CreateButton(self, config)
+    end
+
+    function tabMethods:CreateToggle(config)
+        registerElement(config.Name or "Toggle", "Toggle")
+        return Library._CreateToggle(self, config)
+    end
+
+    function tabMethods:CreateDropdown(config)
+        registerElement(config.Name or "Dropdown", "Dropdown")
+        return Library._CreateDropdown(self, config)
+    end
+
+    function tabMethods:CreateKeybind(config)
+        registerElement(config.Name or "Keybind", "Keybind")
+        return Library._CreateKeybind(self, config, self)
+    end
+
+    function tabMethods:CreateColorPicker(config)
+        registerElement(config.Name or "ColorPicker", "ColorPicker")
+        return Library._CreateColorPicker(self, config)
+    end
+
+    function tabMethods:CreateTextBox(config)
+        registerElement(config.Name or "TextBox", "TextBox")
+        return Library._CreateTextBox(self, config)
+    end
+
+    function tabMethods:CreateConfigSection()
+        return Library._CreateConfigSection(self)
+    end
+
+    function tabMethods:CreateLabel(config)
+        registerElement(config.Name or "Label", "Label")
+        return Library._CreateLabel(self, config)
+    end
+
+    function tabMethods:CreateDivider(text)
+        if text and text ~= "" then
+            registerElement(text, "Divider")
+        end
+        return Library._CreateDivider(self, text)
+    end
+
+    return tabMethods
 end
 
 function Library._CreateTab(section, name, icon)
@@ -1675,19 +1803,29 @@ function Library._SelectTab(lib, tab, btn, stroke, icon, textLabel, textGradient
         if lib.currentTab.textGradient then
             lib.currentTab.textGradient.Enabled = true
         end
+        
+        -- Reset gradient on unselected tab
+        if lib.currentTab.button:FindFirstChild("UIGradient") then
+            lib.currentTab.button.UIGradient.Transparency = NumberSequence.new(0.3)
+        end
     end
     
     lib.currentTab = tab
     tab.content.Visible = true
     
-    CreateTween(btn, {BackgroundTransparency = 1}, animationspeed.Fast)
+    CreateTween(btn, {BackgroundTransparency = 0.7}, animationspeed.Fast)
     CreateTween(icon, {ImageColor3 = c.Text}, animationspeed.Fast)
-    stroke.Transparency = 1  
+    stroke.Transparency = 0  
     
     if textGradient then
         textGradient.Enabled = false
     end
     textLabel.TextColor3 = c.Text
+    
+    -- Enhance gradient on selected tab
+    if btn:FindFirstChild("UIGradient") then
+        btn.UIGradient.Transparency = NumberSequence.new(0)
+    end
 end
 
 function Library._CreateContentSection(tab, name)
@@ -1776,8 +1914,18 @@ function Library._CreateSlider(tab, config)
         Size = UDim2.new(1, 0, 0, s.Slider.Height),
         Parent = tab.content
     })
-    CreateCorner(frame, 5)
-    CreateStroke(frame)
+    CreateCorner(frame, 6)
+    CreateStroke(frame, c.Border)
+
+    -- Add subtle gradient to slider frame
+    local sliderFrameGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 18, 55)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 12, 35))
+        }),
+        Rotation = 90,
+        Parent = frame
+    })
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
@@ -1807,7 +1955,7 @@ function Library._CreateSlider(tab, config)
 
     local sliderBg = CreateInstance("Frame", {
         Name = "SliderBackground",
-        BackgroundColor3 = Color3.fromRGB(11, 11, 11),
+        BackgroundColor3 = Color3.fromRGB(10, 5, 15),
         Position = UDim2.new(0, 10, 0, 29),
         BorderSizePixel = 0,
         Size = UDim2.new(1, -20, 0, 7),
@@ -1823,6 +1971,16 @@ function Library._CreateSlider(tab, config)
         Parent = sliderBg
     })
     CreateCorner(sliderFill, 100)
+
+    -- Add Galaxy gradient to slider
+    local sliderGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 50, 200)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(160, 100, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 140, 255))
+        }),
+        Parent = sliderFill
+    })
 
     local dragging = false
 
@@ -1891,8 +2049,18 @@ function Library._CreateButton(tab, config)
         Size = UDim2.new(1, 0, 0, s.Button.Height),
         Parent = tab.content
     })
-    CreateCorner(frame, 5)
-    CreateStroke(frame)
+    CreateCorner(frame, 6)
+    CreateStroke(frame, c.Border)
+
+    -- Add subtle gradient to button
+    local buttonGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 18, 55)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 12, 35))
+        }),
+        Rotation = 90,
+        Parent = frame
+    })
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
@@ -1957,8 +2125,18 @@ function Library._CreateToggle(tab, config)
         Size = UDim2.new(1, 0, 0, s.Button.Height),
         Parent = tab.content
     })
-    CreateCorner(frame, 5)
-    CreateStroke(frame)
+    CreateCorner(frame, 6)
+    CreateStroke(frame, c.Border)
+
+    -- Add subtle gradient to toggle
+    local toggleGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 18, 55)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 12, 35))
+        }),
+        Rotation = 90,
+        Parent = frame
+    })
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
@@ -2073,8 +2251,18 @@ function Library._CreateDropdown(tab, config)
         ZIndex = 1,
         Parent = tab.content
     })
-    CreateCorner(frame, 5)
-    CreateStroke(frame)
+    CreateCorner(frame, 6)
+    CreateStroke(frame, c.Border)
+
+    -- Add subtle gradient to dropdown
+    local dropdownGradient = CreateInstance("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 18, 55)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 12, 35))
+        }),
+        Rotation = 90,
+        Parent = frame
+    })
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
