@@ -1,4 +1,4 @@
--- v3
+-- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
 local plr = game:GetService("Players")
@@ -1878,7 +1878,7 @@ function Library._CreateToggle(tab, config)
     local frame = CreateInstance("Frame", {
         Name = "Toggle_" .. name,
         BackgroundColor3 = c.Secondary,
-        BackgroundTransparency = 0.5,
+        BackgroundTransparency = 0.2,
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 0, s.Button.Height),
         Parent = tab.content
