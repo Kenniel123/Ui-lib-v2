@@ -1,3 +1,4 @@
+--v3
 -- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
@@ -1868,6 +1869,8 @@ function Library._CreateButton(tab, config)
     }
 end
 
+
+
 function Library._CreateToggle(tab, config)
     local name = config.Name or "Toggle"
     local default = config.Default or false
@@ -1892,7 +1895,7 @@ function Library._CreateToggle(tab, config)
         TextColor3 = c.Text,
         Text = name,
         TextXAlignment = Enum.TextXAlignment.Left,
-        BackgroundTransparency = 1,
+        BackgroundTransparency = 0.5,
         Position = UDim2.new(0, 14, 0.5, -9),
         TextSize = textsize.Normal,
         Size = UDim2.new(0, 200, 0, 18),
@@ -1902,7 +1905,7 @@ function Library._CreateToggle(tab, config)
     local switchBg = CreateInstance("Frame", {
         Name = "SwitchBackground",
         BackgroundColor3 = enabled and c.Toggle.Enabled or c.Toggle.Disabled,
-        BackgroundTransparency = 0,
+        BackgroundTransparency = 0.4,
         Position = UDim2.new(1, -50, 0.5, -10),
         BorderSizePixel = 0,
         Size = UDim2.new(0, s.Toggle.Width, 0, s.Toggle.Height),
@@ -1925,7 +1928,7 @@ function Library._CreateToggle(tab, config)
     local toggleBtn = CreateInstance("TextButton", {
         Name = "ToggleButton",
         Text = "",
-        BackgroundTransparency = 1,
+        BackgroundTransparency = 0.5,
         Size = UDim2.new(1, 0, 1, 0),
         Parent = switchCircle
     })
@@ -1933,7 +1936,7 @@ function Library._CreateToggle(tab, config)
     local button = CreateInstance("TextButton", {
         Name = "Button",
         Text = "",
-        BackgroundTransparency = 1,
+        BackgroundTransparency = 0.5,
         Size = UDim2.new(1, 0, 1, 0),
         Parent = frame
     })
