@@ -1,4 +1,3 @@
--- v3
 -- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
@@ -13,11 +12,11 @@ local n = "Acrylic"
 local c = {
     Background = Color3.fromRGB(15, 15, 18),
     Secondary = Color3.fromRGB(22, 22, 26),
-    Border = Color3.fromRGB(45, 45, 52),
+    Border = Color3.fromRGB(120, 255, 120),
     Text = Color3.fromRGB(255, 255, 255),
     TextDark = Color3.fromRGB(140, 140, 150),
     TextFade = Color3.fromRGB(12, 12, 12),
-    Accent = Color3.fromRGB(99, 138, 255),
+    Accent = Color3.fromRGB(120, 255, 120),
     AccentDark = Color3.fromRGB(79, 118, 235),
     SurfaceHover = Color3.fromRGB(30, 30, 35),
     Toggle = {
@@ -1879,13 +1878,13 @@ function Library._CreateToggle(tab, config)
     local frame = CreateInstance("Frame", {
         Name = "Toggle_" .. name,
         BackgroundColor3 = c.Secondary,
-        BackgroundTransparency = 0.5,
+        BackgroundTransparency = 0.4,
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 0, s.Button.Height),
         Parent = tab.content
     })
-    CreateCorner(frame, 8)
-    CreateStroke(frame, c.Border, 0.6)
+    CreateCorner(frame, 5)
+    CreateStroke(frame)
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
@@ -1904,7 +1903,7 @@ function Library._CreateToggle(tab, config)
         Name = "SwitchBackground",
         BackgroundColor3 = enabled and c.Toggle.Enabled or c.Toggle.Disabled,
         BackgroundTransparency = 0,
-        Position = UDim2.new(1, -50, 0.5, -10),
+        Position = UDim2.new(1, -48, 0.5, -10),
         BorderSizePixel = 0,
         Size = UDim2.new(0, s.Toggle.Width, 0, s.Toggle.Height),
         Parent = frame
@@ -1915,7 +1914,7 @@ function Library._CreateToggle(tab, config)
         Name = "Circle",
         BackgroundColor3 = enabled and c.Toggle.Enabled or c.Toggle.Circle,
         AnchorPoint = Vector2.new(0, 0.5),
-        Position = enabled and UDim2.new(0, 22, 0.5, 0) or UDim2.new(0, 4, 0.5, 0),
+        Position = enabled and UDim2.new(0, 21, 0.5, 0) or UDim2.new(0, 4, 0.5, 0),
         BorderSizePixel = 0,
         BackgroundTransparency = 0,
         Size = UDim2.new(0, s.Toggle.Circle, 0, s.Toggle.Circle),
@@ -1941,9 +1940,15 @@ function Library._CreateToggle(tab, config)
 
     local function UpdateToggle()
         if enabled then
+            switchBg.BackgroundColor3 = c.Toggle.Enabled
+            switchCircle.Position = UDim2.new(0, 21, 0.5, 0)
+            switchCircle.BackgroundColor3 = c.Toggle.Enabled
             CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
-            CreateTween(switchCircle, {Position = UDim2.new(0, 22, 0.5, 0), BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
+            CreateTween(switchCircle, {Position = UDim2.new(0, 21, 0.5, 0), BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
         else
+            switchBg.BackgroundColor3 = c.Toggle.Disabled
+            switchCircle.Position = UDim2.new(0, 4, 0.5, 0)
+            switchCircle.BackgroundColor3 = c.Toggle.Circle
             CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Disabled}, animationspeed.Normal)
             CreateTween(switchCircle, {Position = UDim2.new(0, 4, 0.5, 0), BackgroundColor3 = c.Toggle.Circle}, animationspeed.Normal)
         end
