@@ -1,5 +1,4 @@
--- v2 
---Welcome mate if you're using this ui atleast advertise my script https://discord.gg/88gR5XUpkC thank u
+-- v3 
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     local str = ""
@@ -90,26 +89,24 @@ local function GetProtectedGui()
 end
 
 
--- Modern Glassmorphism Color Scheme - Enhanced for 2026
-_G.Color = Color3.fromRGB(99, 102, 241)
-_G.BGColor = Color3.fromRGB(8, 8, 12)
-_G.Surface = Color3.fromRGB(18, 18, 26)
-_G.SurfaceLight = Color3.fromRGB(26, 26, 38)
-_G.SurfaceHover = Color3.fromRGB(34, 34, 50)
-_G.Border = Color3.fromRGB(40, 40, 58)
-_G.BorderLight = Color3.fromRGB(55, 55, 75)
-_G.TextPrimary = Color3.fromRGB(255, 255, 255)
-_G.TextSecondary = Color3.fromRGB(160, 175, 200)
-_G.TextMuted = Color3.fromRGB(110, 125, 150)
-_G.Accent = Color3.fromRGB(99, 102, 241)
-_G.AccentLight = Color3.fromRGB(130, 140, 250)
-_G.AccentDark = Color3.fromRGB(75, 80, 200)
-_G.Success = Color3.fromRGB(34, 197, 94)
-_G.Warning = Color3.fromRGB(251, 191, 36)
-_G.Error = Color3.fromRGB(248, 113, 113)
-_G.Info = Color3.fromRGB(59, 130, 246)
-_G.GlassTransparency = 0.12
-_G.GlowIntensity = 0.15
+_G.Color = Color3.fromRGB(99, 102, 241)  
+_G.BGColor = Color3.fromRGB(8, 8, 12)  
+_G.Surface = Color3.fromRGB(18, 18, 26)  
+_G.SurfaceLight = Color3.fromRGB(26, 26, 38)  
+_G.SurfaceHover = Color3.fromRGB(34, 34, 50)  
+_G.Border = Color3.fromRGB(40, 40, 58)   
+_G.BorderLight = Color3.fromRGB(55, 55, 75)  
+_G.TextPrimary = Color3.fromRGB(255, 255, 255) 
+_G.TextSecondary = Color3.fromRGB(160, 175, 200) 
+_G.TextMuted = Color3.fromRGB(110, 125, 150) 
+_G.Accent = Color3.fromRGB(99, 102, 241)  
+_G.AccentLight = Color3.fromRGB(130, 140, 250) 
+_G.AccentDark = Color3.fromRGB(75, 80, 200)  
+_G.Success = Color3.fromRGB(34, 197, 94)   
+_G.Warning = Color3.fromRGB(251, 191, 36)  
+_G.Error = Color3.fromRGB(239, 68, 68)    
+_G.GlassBackground = Color3.fromRGB(20, 20, 30) 
+_G.GlassBorder = Color3.fromRGB(60, 60, 85)  
 
 IKAI = true
 if IKAI then
@@ -409,215 +406,142 @@ if IKAI then
     Main.Name = "Main"
     Main.Parent = ShadcnUI
     Main.AnchorPoint = Vector2.new(0.5, 0.5)
-    Main.BackgroundColor3 = _G.Surface
-    Main.BackgroundTransparency = _G.GlassTransparency
+    Main.BackgroundColor3 = _G.GlassBackground
+    Main.BackgroundTransparency = 0.15 -- Semi-transparent for glass effect
     Main.Position = UDim2.new(0.5, 0, 0.5, 0)
     Main.Size = UDim2.new(0, responsiveWidth, 0, responsiveHeight)
     Main.BorderSizePixel = 0
-    Main.ClipsDescendants = true
 
-    -- Modern gradient background
-    local BackgroundGradient = Instance.new("Frame")
-    BackgroundGradient.Name = "BackgroundGradient"
-    BackgroundGradient.Parent = Main
-    BackgroundGradient.Size = UDim2.new(1, 0, 1, 0)
-    BackgroundGradient.BackgroundColor3 = _G.BGColor
-    BackgroundGradient.BackgroundTransparency = 0.25
-    BackgroundGradient.BorderSizePixel = 0
-    BackgroundGradient.ZIndex = 0
-
-    -- Subtle animated gradient overlay
-    local GradientOverlay = Instance.new("Frame")
+    -- 🔥 MODERN GRADIENT OVERLAY
+    local GradientOverlay = Instance.new("ImageLabel")
     GradientOverlay.Name = "GradientOverlay"
     GradientOverlay.Parent = Main
-    GradientOverlay.Size = UDim2.new(1, 0, 0, 200)
+    GradientOverlay.Size = UDim2.new(1, 0, 1, 0)
     GradientOverlay.Position = UDim2.new(0, 0, 0, 0)
-    GradientOverlay.BackgroundColor3 = _G.Accent
-    GradientOverlay.BackgroundTransparency = 0.92
-    GradientOverlay.BorderSizePixel = 0
-    GradientOverlay.ZIndex = 1
+    GradientOverlay.Image = "rbxassetid://8929143573" -- Subtle gradient
+    GradientOverlay.BackgroundTransparency = 1
+    GradientOverlay.ImageTransparency = 0.7
+    GradientOverlay.ZIndex = 0
 
-    -- Modern rounded corners (larger radius for modern look)
+    -- 🔥 BACKGROUND IMAGE
+    local BackgroundImage = Instance.new("ImageLabel")
+    BackgroundImage.Name = "BackgroundImage"
+    BackgroundImage.Parent = Main
+    BackgroundImage.Size = UDim2.new(1, 0, 1, 0)
+    BackgroundImage.Position = UDim2.new(0, 0, 0, 0)
+    BackgroundImage.Image = _G.BackgroundImage or ""
+    BackgroundImage.ScaleType = Enum.ScaleType.Crop
+    BackgroundImage.BackgroundTransparency = 1
+    BackgroundImage.ZIndex = 0
+
+    -- MODERN DARK OVERLAY (for readability)
+    local Overlay = Instance.new("Frame")
+    Overlay.Name = "Overlay"
+    Overlay.Parent = Main
+    Overlay.Size = UDim2.new(1, 0, 1, 0)
+    Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Overlay.BackgroundTransparency = 0.6
+    Overlay.ZIndex = 1
+
     local MCNR = Instance.new("UICorner")
-    MCNR.CornerRadius = UDim.new(0, 20)
+    MCNR.CornerRadius = UDim.new(0, 12) -- More rounded corners
     MCNR.Parent = Main
 
-    -- Enhanced border with subtle glow
     local MainStroke = Instance.new("UIStroke")
     MainStroke.Parent = Main
-    MainStroke.Color = _G.Border
-    MainStroke.Thickness = 1.2
+    MainStroke.Color = _G.GlassBorder
+    MainStroke.Thickness = 1.5
     MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    MainStroke.Transparency = 0.35
     MainStroke.ZIndex = 3
 
-    -- Subtle top accent glow
-    local TopGlow = Instance.new("Frame")
-    TopGlow.Name = "TopGlow"
-    TopGlow.Parent = Main
-    TopGlow.Size = UDim2.new(1, 0, 0, 80)
-    TopGlow.Position = UDim2.new(0, 0, 0, 0)
-    TopGlow.BackgroundColor3 = _G.Accent
-    TopGlow.BackgroundTransparency = 0.94
-    TopGlow.BorderSizePixel = 0
-    TopGlow.ZIndex = 2
-
-    local TopGlowCorner = Instance.new("UICorner")
-    TopGlowCorner.CornerRadius = UDim.new(0, 20)
-    TopGlowCorner.Parent = TopGlow
-
-    -- Bottom subtle gradient
-    local BottomGradient = Instance.new("Frame")
-    BottomGradient.Name = "BottomGradient"
-    BottomGradient.Parent = Main
-    BottomGradient.Size = UDim2.new(1, 0, 0, 80)
-    BottomGradient.Position = UDim2.new(0, 0, 1, -80)
-    BottomGradient.BackgroundColor3 = _G.AccentDark
-    BottomGradient.BackgroundTransparency = 0.93
-    BottomGradient.BorderSizePixel = 0
-    BottomGradient.ZIndex = 2
-
-    local BottomGradientCorner = Instance.new("UICorner")
-    BottomGradientCorner.CornerRadius = UDim.new(0, 20)
-    BottomGradientCorner.Parent = BottomGradient
-
-    -- TOP BAR - Modern Frosted Glass Design
+    -- TOP BAR - FROSTED GLASS EFFECT
     local Top = Instance.new("Frame")
     Top.Name = "Top"
     Top.Parent = Main
-    Top.BackgroundColor3 = _G.SurfaceLight
-    Top.BackgroundTransparency = 0.08
-    Top.Size = UDim2.new(1, 0, 0, isMobileLayout and 52 or 48)
+    Top.BackgroundColor3 = _G.GlassBackground
+    Top.BackgroundTransparency = 0.3 -- Frosted glass effect
+    Top.Size = UDim2.new(1, 0, 0, isMobileLayout and 50 or 40)
     Top.BorderSizePixel = 0
     Top.ZIndex = 2
 
     local TCNR = Instance.new("UICorner")
-    TCNR.CornerRadius = UDim.new(0, 14)
+    TCNR.CornerRadius = UDim.new(0, 12)
     TCNR.Parent = Top
 
-    -- Top bar accent line with gradient
-    local TopAccent = Instance.new("Frame")
-    TopAccent.Name = "TopAccent"
-    TopAccent.Parent = Top
-    TopAccent.BackgroundColor3 = _G.Accent
-    TopAccent.BackgroundTransparency = 0.25
-    TopAccent.Size = UDim2.new(1, 0, 0, 2.5)
-    TopAccent.Position = UDim2.new(0, 0, 0, 0)
-    TopAccent.BorderSizePixel = 0
-    TopAccent.ZIndex = 4
+    -- Animated glow effect for top bar
+    local TopGlow = Instance.new("ImageLabel")
+    TopGlow.Name = "TopGlow"
+    TopGlow.Parent = Top
+    TopGlow.Size = UDim2.new(1, 0, 1, 0)
+    TopGlow.Position = UDim2.new(0, 0, 0, 0)
+    TopGlow.Image = "rbxassetid://8929143573"
+    TopGlow.BackgroundTransparency = 1
+    TopGlow.ImageTransparency = 0.8
+    TopGlow.ImageColor3 = _G.Accent
+    TopGlow.ZIndex = 1
 
-    local TopAccentCorner = Instance.new("UICorner")
-    TopAccentCorner.CornerRadius = UDim.new(0, 2)
-    TopAccentCorner.Parent = TopAccent
-
-    -- Animated glow effect on top bar
-    local TopBarGlow = Instance.new("Frame")
-    TopBarGlow.Name = "TopBarGlow"
-    TopBarGlow.Parent = Top
-    TopBarGlow.Size = UDim2.new(0.4, 0, 1, 0)
-    TopBarGlow.Position = UDim2.new(0, 0, 0, 0)
-    TopBarGlow.BackgroundColor3 = _G.Accent
-    TopBarGlow.BackgroundTransparency = 0.95
-    TopBarGlow.BorderSizePixel = 0
-    TopBarGlow.ZIndex = 3
-
-    -- Title with modern typography
     local Name = Instance.new("TextLabel")
     Name.Name = "Name"
     Name.Parent = Top
     Name.BackgroundTransparency = 1
-    Name.Position = UDim2.new(0, isMobileLayout and 14 or 22, 0, 2)
-    Name.Size = UDim2.new(0, isMobileLayout and 160 or 220, 1, 0)
-    Name.Font = Enum.Font.GothamBold
+    Name.Position = UDim2.new(0, isMobileLayout and 10 or 20, 0, 0)
+    Name.Size = UDim2.new(0, isMobileLayout and 150 or 200, 1, 0)
+    Name.Font = Enum.Font.GothamSemibold
     Name.Text = text
     Name.TextColor3 = _G.TextPrimary
-    Name.TextSize = isMobileLayout and 15 or 17
+    Name.TextSize = isMobileLayout and 14 or 16
     Name.TextXAlignment = Enum.TextXAlignment.Left
     Name.RichText = true
     Name.Text = gradient(text, gradientText)
     Name.ZIndex = 3
 
-    -- Add subtitle/label effect
-    local TitleGlow = Instance.new("Frame")
-    TitleGlow.Name = "TitleGlow"
-    TitleGlow.Parent = Name
-    TitleGlow.Size = UDim2.new(1, 0, 0.3, 0)
-    TitleGlow.Position = UDim2.new(0, 0, 0.7, 0)
-    TitleGlow.BackgroundColor3 = _G.Accent
-    TitleGlow.BackgroundTransparency = 0.9
-    TitleGlow.BorderSizePixel = 0
-    TitleGlow.ZIndex = 2
-
-    -- Modern KEYBIND BUTTON - Pill shape with hover effect
+    -- KEYBIND BUTTON - GLASS STYLE
     local BindButton = Instance.new("TextButton")
     BindButton.Name = "BindButton"
     BindButton.Parent = Top
-    BindButton.BackgroundColor3 = _G.Surface
-    BindButton.BackgroundTransparency = 0.4
-    BindButton.Position = isMobileLayout and UDim2.new(0.5, -65, 0.22, 0) or UDim2.new(0.62, 0, 0.2, 0)
-    BindButton.Size = UDim2.new(0, 120, 0, 28)
+    BindButton.BackgroundColor3 = _G.SurfaceLight
+    BindButton.BackgroundTransparency = 0.7
+    BindButton.Position = isMobileLayout and UDim2.new(0.5, -60, 0.2, 0) or UDim2.new(0.7, 0, 0.2, 0)
+    BindButton.Size = UDim2.new(0, 120, 0, 24)
     BindButton.Font = Enum.Font.GothamMedium
-    BindButton.Text = "[ RightShift ]"
+    BindButton.Text = "[ RightControl ]"
     BindButton.TextColor3 = _G.TextSecondary
-    BindButton.TextSize = isMobileLayout and 10 or 11
+    BindButton.TextSize = isMobileLayout and 10 or 12
     BindButton.AutoButtonColor = false
     BindButton.Visible = not isMobileLayout
     BindButton.ZIndex = 3
 
     local BindCorner = Instance.new("UICorner")
-    BindCorner.CornerRadius = UDim.new(1, 0)  -- Pill shape
+    BindCorner.CornerRadius = UDim.new(0, 8)
     BindCorner.Parent = BindButton
 
     local BindStroke = Instance.new("UIStroke")
     BindStroke.Parent = BindButton
-    BindStroke.Color = _G.Border
+    BindStroke.Color = _G.GlassBorder
     BindStroke.Thickness = 1
-    BindStroke.Transparency = 0.6
 
-    -- Hover effect for bind button
-    local BindHover = Instance.new("Frame")
-    BindHover.Name = "BindHover"
-    BindHover.Parent = BindButton
-    BindHover.Size = UDim2.new(1, 0, 1, 0)
-    BindHover.BackgroundColor3 = _G.Accent
-    BindHover.BackgroundTransparency = 0.95
-    BindHover.BorderSizePixel = 0
-    BindHover.ZIndex = 2
-
-    -- Modern MINIMIZE BUTTON - Circular with icon
+    -- MINIMIZE BUTTON - GLASS STYLE
     local MinimizeBtn = Instance.new("TextButton")
-    MinimizeBtn.Name = "MinimizeBtn"
     MinimizeBtn.Parent = Top
-    MinimizeBtn.BackgroundColor3 = _G.Surface
-    MinimizeBtn.BackgroundTransparency = 0.4
-    MinimizeBtn.Position = UDim2.new(1, isMobileLayout and -42 or -50, isMobileLayout and 0.1 or 0.15, 0)
-    MinimizeBtn.Size = isMobileLayout and UDim2.new(0, 34, 0, 34) or UDim2.new(0, 30, 0, 30)
-    MinimizeBtn.Text = "−"
+    MinimizeBtn.BackgroundColor3 = _G.SurfaceLight
+    MinimizeBtn.BackgroundTransparency = 0.7
+    MinimizeBtn.Position = UDim2.new(1, isMobileLayout and -30 or -35, isMobileLayout and 0.1 or 0.2, 0)
+    MinimizeBtn.Size = isMobileLayout and UDim2.new(0, 28, 0, 28) or UDim2.new(0, 24, 0, 24)
+    MinimizeBtn.Text = "-"
     MinimizeBtn.Font = Enum.Font.GothamBold
-    MinimizeBtn.TextSize = isMobileLayout and 20 or 18
+    MinimizeBtn.TextSize = isMobileLayout and 18 or 16
     MinimizeBtn.TextColor3 = _G.TextSecondary
     MinimizeBtn.AutoButtonColor = false
     MinimizeBtn.ZIndex = 3
 
     local MinCorner = Instance.new("UICorner")
-    MinCorner.CornerRadius = UDim.new(1, 0)  -- Circular
+    MinCorner.CornerRadius = UDim.new(0, 8)
     MinCorner.Parent = MinimizeBtn
 
     local MinStroke = Instance.new("UIStroke")
     MinStroke.Parent = MinimizeBtn
-    MinStroke.Color = _G.Border
+    MinStroke.Color = _G.GlassBorder
     MinStroke.Thickness = 1
-    MinStroke.Transparency = 0.5
-
-    -- Minimize button hover effect
-    local MinHover = Instance.new("Frame")
-    MinHover.Name = "MinHover"
-    MinHover.Parent = MinimizeBtn
-    MinHover.Size = UDim2.new(1, 0, 1, 0)
-    MinHover.BackgroundColor3 = _G.Warning
-    MinHover.BackgroundTransparency = 0.85
-    MinHover.BorderSizePixel = 0
-    MinHover.ZIndex = 2
 
     -- CONTINUE YOUR CODE...
     local MiniFrame
@@ -670,23 +594,35 @@ if IKAI then
             MiniFrame = Instance.new("TextButton")
             MiniFrame.Parent = ShadcnUI
             MiniFrame.BackgroundColor3 = _G.Accent
-            MiniFrame.Size = UDim2.new(0, 100, 0, 32)
-            MiniFrame.Position = UDim2.new(0.5, -50, 0, 10)
+            MiniFrame.BackgroundTransparency = 0.2
+            MiniFrame.Size = UDim2.new(0, 120, 0, 36)
+            MiniFrame.Position = UDim2.new(0.5, -60, 0, 10)
             MiniFrame.Text = "Open Hub"
             MiniFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
-            MiniFrame.Font = Enum.Font.GothamMedium
+            MiniFrame.Font = Enum.Font.GothamSemibold
             MiniFrame.TextSize = 14
             MiniFrame.Visible = false
             MiniFrame.AutoButtonColor = false
 
             local corner = Instance.new("UICorner")
-            corner.CornerRadius = UDim.new(0, 6)
+            corner.CornerRadius = UDim.new(0, 10)
             corner.Parent = MiniFrame
 
             local stroke = Instance.new("UIStroke")
             stroke.Parent = MiniFrame
-            stroke.Color = _G.Border
-            stroke.Thickness = 1
+            stroke.Color = _G.AccentLight
+            stroke.Thickness = 1.5
+
+            -- Glow effect for mini frame
+            local glow = Instance.new("ImageLabel")
+            glow.Name = "Glow"
+            glow.Parent = MiniFrame
+            glow.Size = UDim2.new(1, 0, 1, 0)
+            glow.Image = "rbxassetid://8929143573"
+            glow.BackgroundTransparency = 1
+            glow.ImageTransparency = 0.7
+            glow.ImageColor3 = _G.Accent
+            glow.ZIndex = 0
 
             makeDraggable(MiniFrame)
 
@@ -750,37 +686,21 @@ if IKAI then
         local Tab = Instance.new("Frame")
         Tab.Name = "Tab"
         Tab.Parent = Main
-        Tab.BackgroundColor3 = _G.Surface
-        Tab.BackgroundTransparency = 0.05
-        Tab.Position = UDim2.new(0, isMobileLayout and 6 or 12, 0, isMobileLayout and 58 or 54)
-        Tab.Size = UDim2.new(0, tabWidth, 0, responsiveHeight - (isMobileLayout and 64 or 60))
+        Tab.BackgroundColor3 = _G.GlassBackground
+        Tab.BackgroundTransparency = 0.2
+        Tab.Position = UDim2.new(0, isMobileLayout and 5 or 10, 0, isMobileLayout and 55 or 50)
+        Tab.Size = UDim2.new(0, tabWidth, 0, responsiveHeight - (isMobileLayout and 60 or 50))
         Tab.BorderSizePixel = 0
         
         local TCNR = Instance.new("UICorner")
         TCNR.Name = "TCNR"
         TCNR.Parent = Tab
-        TCNR.CornerRadius = UDim.new(0, 12)
+        TCNR.CornerRadius = UDim.new(0, 10)
         
         local TabStroke = Instance.new("UIStroke")
         TabStroke.Parent = Tab
-        TabStroke.Color = _G.Border
-        TabStroke.Thickness = 1
-        TabStroke.Transparency = 0.4
-        
-        -- Tab panel subtle gradient
-        local TabGradient = Instance.new("Frame")
-        TabGradient.Name = "TabGradient"
-        TabGradient.Parent = Tab
-        TabGradient.Size = UDim2.new(1, 0, 0.15, 0)
-        TabGradient.Position = UDim2.new(0, 0, 0, 0)
-        TabGradient.BackgroundColor3 = _G.Accent
-        TabGradient.BackgroundTransparency = 0.93
-        TabGradient.BorderSizePixel = 0
-        TabGradient.ZIndex = 2
-        
-        local TabGradientCorner = Instance.new("UICorner")
-        TabGradientCorner.CornerRadius = UDim.new(0, 12)
-        TabGradientCorner.Parent = TabGradient
+        TabStroke.Color = _G.GlassBorder
+        TabStroke.Thickness = 1.5
         
         local ScrollTab = Instance.new("ScrollingFrame")
         ScrollTab.Name = "ScrollTab"
@@ -808,37 +728,21 @@ if IKAI then
         local Page = Instance.new("Frame")
         Page.Name = "Page"
         Page.Parent = Main
-        Page.BackgroundColor3 = _G.Surface
-        Page.BackgroundTransparency = 0.05
-        Page.Position = UDim2.new(0, tabWidth + (isMobileLayout and 12 or 18), 0, isMobileLayout and 58 or 54)
-        Page.Size = UDim2.new(0, pageWidth, 0, responsiveHeight - (isMobileLayout and 64 or 60))
+        Page.BackgroundColor3 = _G.GlassBackground
+        Page.BackgroundTransparency = 0.2
+        Page.Position = UDim2.new(0, tabWidth + (isMobileLayout and 10 or 15), 0, isMobileLayout and 55 or 50)
+        Page.Size = UDim2.new(0, pageWidth, 0, responsiveHeight - (isMobileLayout and 60 or 50))
         Page.BorderSizePixel = 0
         
         local PCNR = Instance.new("UICorner")
         PCNR.Name = "PCNR"
         PCNR.Parent = Page
-        PCNR.CornerRadius = UDim.new(0, 12)
+        PCNR.CornerRadius = UDim.new(0, 10)
         
         local PageStroke = Instance.new("UIStroke")
         PageStroke.Parent = Page
-        PageStroke.Color = _G.Border
-        PageStroke.Thickness = 1
-        PageStroke.Transparency = 0.4
-        
-        -- Page panel subtle gradient
-        local PageGradient = Instance.new("Frame")
-        PageGradient.Name = "PageGradient"
-        PageGradient.Parent = Page
-        PageGradient.Size = UDim2.new(1, 0, 0.08, 0)
-        PageGradient.Position = UDim2.new(0, 0, 0, 0)
-        PageGradient.BackgroundColor3 = _G.Accent
-        PageGradient.BackgroundTransparency = 0.94
-        PageGradient.BorderSizePixel = 0
-        PageGradient.ZIndex = 2
-        
-        local PageGradientCorner = Instance.new("UICorner")
-        PageGradientCorner.CornerRadius = UDim.new(0, 12)
-        PageGradientCorner.Parent = PageGradient
+        PageStroke.Color = _G.GlassBorder
+        PageStroke.Thickness = 1.5
         
         local MainPage = Instance.new("Frame")
         MainPage.Name = "MainPage"
@@ -873,14 +777,13 @@ if IKAI then
             TabButton.Parent = ScrollTab
             TabButton.Name = text .. "Server"
             TabButton.Text = isMobileLayout and string.sub(text, 1, 8) or text
-            TabButton.BackgroundColor3 = _G.Surface
-            TabButton.BackgroundTransparency = 0.95
-            TabButton.Size = UDim2.new(0, tabWidth - (isMobileLayout and 24 or 24), 0, isMobileLayout and 30 or 34)
+            TabButton.BackgroundColor3 = _G.SurfaceLight
+            TabButton.BackgroundTransparency = 0.85
+            TabButton.Size = UDim2.new(0, tabWidth - (isMobileLayout and 20 or 20), 0, isMobileLayout and 28 or 32)
             TabButton.Font = Enum.Font.GothamMedium
             TabButton.TextColor3 = _G.TextSecondary
-            TabButton.TextSize = isMobileLayout and 11 or 13
+            TabButton.TextSize = isMobileLayout and 11 or 14
             TabButton.AutoButtonColor = false
-            TabButton.BorderSizePixel = 0
 
             local TabCorner = Instance.new("UICorner")
             TabCorner.CornerRadius = UDim.new(0, 8)
@@ -888,36 +791,8 @@ if IKAI then
 
             local TabStroke = Instance.new("UIStroke")
             TabStroke.Parent = TabButton
-            TabStroke.Color = _G.Border
+            TabStroke.Color = _G.GlassBorder
             TabStroke.Thickness = 1
-            TabStroke.Transparency = 0.7
-            
-            -- Active indicator (left accent bar)
-            local ActiveIndicator = Instance.new("Frame")
-            ActiveIndicator.Name = "ActiveIndicator"
-            ActiveIndicator.Parent = TabButton
-            ActiveIndicator.BackgroundColor3 = _G.Accent
-            ActiveIndicator.BackgroundTransparency = 0.3
-            ActiveIndicator.Size = UDim2.new(0, 3, 0.6, 0)
-            ActiveIndicator.Position = UDim2.new(0, 0, 0.5, 0)
-            ActiveIndicator.AnchorPoint = Vector2.new(0, 0.5)
-            ActiveIndicator.BorderSizePixel = 0
-            ActiveIndicator.Visible = false
-            ActiveIndicator.ZIndex = 3
-            
-            local ActiveIndicatorCorner = Instance.new("UICorner")
-            ActiveIndicatorCorner.CornerRadius = UDim.new(0, 2)
-            ActiveIndicatorCorner.Parent = ActiveIndicator
-            
-            -- Hover overlay
-            local HoverOverlay = Instance.new("Frame")
-            HoverOverlay.Name = "HoverOverlay"
-            HoverOverlay.Parent = TabButton
-            HoverOverlay.Size = UDim2.new(1, 0, 1, 0)
-            HoverOverlay.BackgroundColor3 = _G.Accent
-            HoverOverlay.BackgroundTransparency = 0.95
-            HoverOverlay.BorderSizePixel = 0
-            HoverOverlay.ZIndex = 2
             
             local MainFramePage = Instance.new("ScrollingFrame")
             MainFramePage.Name = text .. "_Page"
@@ -945,35 +820,21 @@ if IKAI then
             UIListLayout.HorizontalAlignment = "Center"
             
             TabButton.MouseButton1Click:Connect(function()
-                -- Reset all tabs
                 for i, v in next, ScrollTab:GetChildren() do
                     if v:IsA("TextButton") then
                         TweenService:Create(
                             v,
-                            TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                            {BackgroundColor3 = _G.Surface, BackgroundTransparency = 0.95, TextColor3 = _G.TextSecondary}
+                            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                            {BackgroundColor3 = _G.SurfaceLight, BackgroundTransparency = 0.85, TextColor3 = _G.TextSecondary}
                         ):Play()
-                        -- Hide all active indicators
-                        if v:FindFirstChild("ActiveIndicator") then
-                            v.ActiveIndicator.Visible = false
-                        end
                     end
                 end
-                -- Activate clicked tab
                 TweenService:Create(
                     TabButton,
-                    TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {BackgroundColor3 = _G.SurfaceLight, BackgroundTransparency = 0.15, TextColor3 = _G.TextPrimary}
-                ):Play()
-                -- Show active indicator
-                ActiveIndicator.Visible = true
-                TweenService:Create(
-                    ActiveIndicator,
-                    TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {BackgroundTransparency = 0.2}
+                    TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                    {BackgroundColor3 = _G.Accent, BackgroundTransparency = 0.15, TextColor3 = _G.TextPrimary}
                 ):Play()
                 
-                -- Switch page
                 for i, v in next, PageList:GetChildren() do
                     currentpage = string.gsub(TabButton.Name, "Server", "") .. "_Page"
                     if v.Name == currentpage then
@@ -983,24 +844,20 @@ if IKAI then
             end)
             
             if abc == false then
-                -- Reset all tabs
                 for i, v in next, ScrollTab:GetChildren() do
                     if v:IsA("TextButton") then
                         TweenService:Create(
                             v,
-                            TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                            {BackgroundColor3 = _G.Surface, BackgroundTransparency = 0.95, TextColor3 = _G.TextSecondary}
+                            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                            {BackgroundColor3 = _G.Surface, BackgroundTransparency = 0.9, TextColor3 = _G.TextSecondary}
                         ):Play()
                     end
                 end
-                -- Activate first tab
                 TweenService:Create(
                     TabButton,
-                    TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {BackgroundColor3 = _G.SurfaceLight, BackgroundTransparency = 0.15, TextColor3 = _G.TextPrimary}
+                    TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                    {BackgroundColor3 = _G.Accent, BackgroundTransparency = 0.2, TextColor3 = _G.TextPrimary}
                 ):Play()
-                -- Show active indicator on first tab
-                ActiveIndicator.Visible = true
                 UIPageLayout:JumpToIndex(1)
                 abc = true
             end
@@ -1019,145 +876,163 @@ if IKAI then
                 Button.Name = "Button"
                 Button.Parent = MainFramePage
                 Button.BackgroundColor3 = _G.SurfaceLight
-                Button.BackgroundTransparency = 0.15
-                Button.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 38 or 42)
+                Button.BackgroundTransparency = 0.85
+                Button.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
                 Button.Font = Enum.Font.GothamMedium
-                Button.Text = ""
+                Button.Text = text
                 Button.TextColor3 = _G.TextPrimary
                 Button.TextSize = isMobileLayout and 12 or 14
                 Button.AutoButtonColor = false
-                Button.ClipsDescendants = true
-                Button.BorderSizePixel = 0
 
                 local ButtonCorner = Instance.new("UICorner")
-                ButtonCorner.CornerRadius = UDim.new(0, 10)
+                ButtonCorner.CornerRadius = UDim.new(0, 8)
                 ButtonCorner.Parent = Button
 
                 local ButtonStroke = Instance.new("UIStroke")
                 ButtonStroke.Parent = Button
-                ButtonStroke.Color = _G.Border
-                ButtonStroke.Thickness = 1
-                ButtonStroke.Transparency = 0.6
+                ButtonStroke.Color = _G.GlassBorder
+                ButtonStroke.Thickness = isMobileLayout and 1.5 or 2
                 ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-                -- Subtle gradient overlay
-                local ButtonGradient = Instance.new("Frame")
-                ButtonGradient.Name = "ButtonGradient"
-                ButtonGradient.Parent = Button
-                ButtonGradient.BackgroundColor3 = _G.Accent
-                ButtonGradient.BackgroundTransparency = 0.95
-                ButtonGradient.Size = UDim2.new(1, 0, 0.5, 0)
-                ButtonGradient.Position = UDim2.new(0, 0, 0, 0)
-                ButtonGradient.BorderSizePixel = 0
-                ButtonGradient.ZIndex = 1
+                -- Modern glow effect
+                local ButtonGlow = Instance.new("ImageLabel")
+                ButtonGlow.Name = "ButtonGlow"
+                ButtonGlow.Parent = Button
+                ButtonGlow.Size = UDim2.new(1, 0, 1, 0)
+                ButtonGlow.Image = "rbxassetid://8929143573"
+                ButtonGlow.BackgroundTransparency = 1
+                ButtonGlow.ImageTransparency = 0.9
+                ButtonGlow.ZIndex = 0
 
-                local ButtonGradientCorner = Instance.new("UICorner")
-                ButtonGradientCorner.CornerRadius = UDim.new(0, 10)
-                ButtonGradientCorner.Parent = ButtonGradient
+                
+                local ButtonInner = Instance.new("Frame")
+                ButtonInner.Name = "ButtonInner"
+                ButtonInner.Parent = Button
+                ButtonInner.BackgroundColor3 = _G.SurfaceLight
+                ButtonInner.BackgroundTransparency = 0.9
+                ButtonInner.Size = UDim2.new(1, -4, 1, -4)
+                ButtonInner.Position = UDim2.new(0, 2, 0, 2)
+                ButtonInner.ClipsDescendants = true
 
-                -- Icon placeholder (optional)
-                local ButtonIcon = Instance.new("ImageLabel")
-                ButtonIcon.Name = "ButtonIcon"
-                ButtonIcon.Parent = Button
-                ButtonIcon.BackgroundTransparency = 1
-                ButtonIcon.Size = UDim2.new(0, 18, 0, 18)
-                ButtonIcon.Position = UDim2.new(0, 12, 0.5, 0)
-                ButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
-                ButtonIcon.Image = "rbxassetid://4458962870"  -- Default icon
-                ButtonIcon.ImageColor3 = _G.TextSecondary
-                ButtonIcon.Visible = false  -- Hidden by default
-                ButtonIcon.ZIndex = 2
+                local ButtonInnerCorner = Instance.new("UICorner")
+                ButtonInnerCorner.CornerRadius = UDim.new(0, 6)
+                ButtonInnerCorner.Parent = ButtonInner
 
+                local ButtonInnerStroke = Instance.new("UIStroke")
+                ButtonInnerStroke.Parent = ButtonInner
+                ButtonInnerStroke.Color = _G.GlassBorder
+                ButtonInnerStroke.Thickness = 1
+                ButtonInnerStroke.Transparency = 0.6
+
+                
                 local ButtonText = Instance.new("TextLabel")
                 ButtonText.Name = "ButtonText"
-                ButtonText.Parent = Button
+                ButtonText.Parent = ButtonInner
                 ButtonText.BackgroundTransparency = 1
-                ButtonText.Size = UDim2.new(1, -10, 1, 0)
-                ButtonText.Position = UDim2.new(0, 10, 0, 0)
-                ButtonText.Font = Enum.Font.GothamSemibold
+                ButtonText.Size = UDim2.new(1, 0, 1, 0)
+                ButtonText.Font = Enum.Font.GothamMedium
                 ButtonText.Text = text
                 ButtonText.TextColor3 = _G.TextPrimary
-                ButtonText.TextSize = isMobileLayout and 12 or 13
+                ButtonText.TextSize = isMobileLayout and 12 or 14
                 ButtonText.TextXAlignment = Enum.TextXAlignment.Center
                 ButtonText.TextYAlignment = Enum.TextYAlignment.Center
-                ButtonText.ZIndex = 2
 
-                -- Modern hover effects with smooth transitions
+                
                 Button.MouseEnter:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        BackgroundTransparency = 0.08
+                    TweenService:Create(Button, TweenInfo.new(0.2), {
+                        BackgroundTransparency = 0.8
+                    }):Play()
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.2), {
+                        BackgroundTransparency = 0.85
                     }):Play()
                     TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
-                        Color = _G.Accent,
-                        Transparency = 0.4,
-                        Thickness = 1.2
+                        Color = _G.Accent
+                    }):Play()
+                    TweenService:Create(ButtonGlow, TweenInfo.new(0.2), {
+                        ImageTransparency = 0.7,
+                        ImageColor3 = _G.Accent
                     }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.2), {
                         TextColor3 = _G.AccentLight
                     }):Play()
-                    TweenService:Create(ButtonGradient, TweenInfo.new(0.25), {
-                        BackgroundTransparency = 0.88
-                    }):Play()
                 end)
 
                 Button.MouseLeave:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        BackgroundTransparency = 0.15
+                    TweenService:Create(Button, TweenInfo.new(0.2), {
+                        BackgroundTransparency = 0.85
+                    }):Play()
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.2), {
+                        BackgroundTransparency = 0.9
                     }):Play()
                     TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
-                        Color = _G.Border,
-                        Transparency = 0.6,
-                        Thickness = 1
+                        Color = _G.GlassBorder
+                    }):Play()
+                    TweenService:Create(ButtonGlow, TweenInfo.new(0.2), {
+                        ImageTransparency = 0.9
                     }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.2), {
                         TextColor3 = _G.TextPrimary
                     }):Play()
-                    TweenService:Create(ButtonGradient, TweenInfo.new(0.25), {
-                        BackgroundTransparency = 0.95
-                    }):Play()
                 end)
 
+                
                 Button.MouseButton1Down:Connect(function()
                     TweenService:Create(Button, TweenInfo.new(0.1), {
-                        BackgroundTransparency = 0
+                        BackgroundTransparency = 0.75
+                    }):Play()
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
+                        BackgroundTransparency = 0.8
                     }):Play()
                     TweenService:Create(ButtonStroke, TweenInfo.new(0.1), {
-                        Color = _G.Accent,
-                        Transparency = 0.2
-                    }):Play()
-                    TweenService:Create(ButtonText, TweenInfo.new(0.1), {
-                        TextColor3 = _G.Accent
+                        Color = _G.Accent
                     }):Play()
                 end)
 
                 Button.MouseButton1Up:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.15), {
-                        BackgroundTransparency = 0.05
+                    TweenService:Create(Button, TweenInfo.new(0.1), {
+                        BackgroundTransparency = 0.8
                     }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.15), {
-                        Color = _G.BorderLight,
-                        Transparency = 0.3
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
+                        BackgroundTransparency = 0.85
+                    }):Play()
+                    TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
+                        Color = _G.Accent
                     }):Play()
                 end)
 
-                -- Click animation with ripple effect
+                
                 Button.MouseButton1Click:Connect(function()
-                    -- Flash effect
-                    TweenService:Create(ButtonGlow, TweenInfo.new(0.1), {
+                    
+                    TweenService:Create(Button, TweenInfo.new(0.1), {
+                        BackgroundColor3 = _G.Accent,
+                        BackgroundTransparency = 0.6
+                    }):Play()
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
+                        BackgroundColor3 = _G.Accent,
                         BackgroundTransparency = 0.7
                     }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.1), {
                         TextColor3 = Color3.fromRGB(255, 255, 255)
                     }):Play()
-
+                    
+                    
                     pcall(callback)
-
-                    task.wait(0.1)
-                    TweenService:Create(ButtonGlow, TweenInfo.new(0.4), {
+                    
+                    
+                    task.wait(0.15)
+                    TweenService:Create(Button, TweenInfo.new(0.3), {
+                        BackgroundColor3 = _G.Surface,
                         BackgroundTransparency = 0.9
                     }):Play()
+                    TweenService:Create(ButtonInner, TweenInfo.new(0.3), {
+                        BackgroundColor3 = _G.Surface,
+                        BackgroundTransparency = 0.95
+                    }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.3), {
-                        TextColor3 = _G.AccentLight
+                        TextColor3 = _G.TextPrimary
+                    }):Play()
+                    TweenService:Create(ButtonStroke, TweenInfo.new(0.3), {
+                        Color = _G.Border
                     }):Play()
                 end)
 
@@ -1213,138 +1088,75 @@ if IKAI then
                 Toggle.Name = "Toggle"
                 Toggle.Parent = MainFramePage
                 Toggle.BackgroundColor3 = _G.SurfaceLight
-                Toggle.BackgroundTransparency = 0.1
-                Toggle.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 38 or 42)
+                Toggle.BackgroundTransparency = 0.85
+                Toggle.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
 
                 local ToggleCorner = Instance.new("UICorner")
-                ToggleCorner.CornerRadius = UDim.new(0, 10)
+                ToggleCorner.CornerRadius = UDim.new(0, 8)
                 ToggleCorner.Parent = Toggle
 
                 local ToggleStroke = Instance.new("UIStroke")
                 ToggleStroke.Parent = Toggle
-                ToggleStroke.Color = _G.Border
+                ToggleStroke.Color = _G.GlassBorder
                 ToggleStroke.Thickness = 1
-                ToggleStroke.Transparency = 0.5
-
-                -- Hover glow effect
-                local ToggleGlow = Instance.new("Frame")
-                ToggleGlow.Name = "ToggleGlow"
-                ToggleGlow.Parent = Toggle
-                ToggleGlow.BackgroundColor3 = _G.Accent
-                ToggleGlow.BackgroundTransparency = 1
-                ToggleGlow.Size = UDim2.new(1, 0, 1, 0)
-                ToggleGlow.ZIndex = 0
-
-                local ToggleGlowCorner = Instance.new("UICorner")
-                ToggleGlowCorner.CornerRadius = UDim.new(0, 10)
-                ToggleGlowCorner.Parent = ToggleGlow
 
                 local Label = Instance.new("TextLabel")
                 Label.Name = "Label"
                 Label.Parent = Toggle
                 Label.BackgroundTransparency = 1
-                Label.Position = UDim2.new(0, isMobileLayout and 12 or 16, 0, 0)
-                Label.Size = UDim2.new(0, isMobileLayout and 180 or 280, 1, 0)
+                Label.Position = UDim2.new(0, isMobileLayout and 10 or 15, 0, 0)
+                Label.Size = UDim2.new(0, isMobileLayout and 200 or 300, 1, 0)
                 Label.Font = Enum.Font.GothamMedium
                 Label.Text = text
                 Label.TextColor3 = _G.TextPrimary
                 Label.TextSize = isMobileLayout and 12 or 14
                 Label.TextXAlignment = Enum.TextXAlignment.Left
-                Label.ZIndex = 2
 
-                -- Modern Toggle Switch
                 local ToggleButton = Instance.new("TextButton")
                 ToggleButton.Name = "ToggleButton"
                 ToggleButton.Parent = Toggle
                 ToggleButton.BackgroundColor3 = _G.Border
-                ToggleButton.Position = UDim2.new(1, isMobileLayout and -48 or -58, 0.5, isMobileLayout and -10 or -11)
-                ToggleButton.Size = isMobileLayout and UDim2.new(0, 42, 0, 22) or UDim2.new(0, 48, 0, 24)
+                ToggleButton.Position = UDim2.new(1, isMobileLayout and -35 or -45, 0.5, isMobileLayout and -8 or -10)
+                ToggleButton.Size = isMobileLayout and UDim2.new(0, 35, 0, 18) or UDim2.new(0, 40, 0, 20)
                 ToggleButton.Text = ""
                 ToggleButton.AutoButtonColor = false
-                ToggleButton.ZIndex = 2
 
                 local ToggleCorner2 = Instance.new("UICorner")
                 ToggleCorner2.CornerRadius = UDim.new(1, 0)
                 ToggleCorner2.Parent = ToggleButton
 
-                -- Inner padding frame
-                local TogglePadding = Instance.new("Frame")
-                TogglePadding.Name = "TogglePadding"
-                TogglePadding.Parent = ToggleButton
-                TogglePadding.BackgroundTransparency = 1
-                TogglePadding.Size = UDim2.new(1, -4, 1, -4)
-                TogglePadding.Position = UDim2.new(0, 2, 0, 2)
-
                 local ToggleKnob = Instance.new("Frame")
                 ToggleKnob.Name = "ToggleKnob"
-                ToggleKnob.Parent = TogglePadding
-                ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                ToggleKnob.Position = UDim2.new(0, 0, 0, 0)
-                ToggleKnob.Size = UDim2.new(0, isMobileLayout and 14 or 16, 1, 0)
+                ToggleKnob.Parent = ToggleButton
+                ToggleKnob.BackgroundColor3 = _G.TextSecondary
+                ToggleKnob.Position = UDim2.new(0, 2, 0, 2)
+                ToggleKnob.Size = isMobileLayout and UDim2.new(0, 14, 0, 14) or UDim2.new(0, 16, 0, 16)
 
                 local ToggleKnobCorner = Instance.new("UICorner")
                 ToggleKnobCorner.CornerRadius = UDim.new(1, 0)
                 ToggleKnobCorner.Parent = ToggleKnob
 
-                -- Knob shadow for depth
-                local KnobShadow = Instance.new("ImageLabel")
-                KnobShadow.Name = "KnobShadow"
-                KnobShadow.Parent = ToggleKnob
-                KnobShadow.BackgroundTransparency = 1
-                KnobShadow.Image = "rbxassetid://5554236805"
-                KnobShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-                KnobShadow.ImageTransparency = 0.7
-                KnobShadow.ScaleType = Enum.ScaleType.Slice
-                KnobShadow.SliceCenter = Rect.new(23, 23, 277, 277)
-                KnobShadow.Size = UDim2.new(1, 8, 1, 8)
-                KnobShadow.Position = UDim2.new(0, -4, 0, -2)
-                KnobShadow.ZIndex = -1
-
                 local function updateState(state)
                     toggled = state
                     if toggled then
-                        TweenService:Create(ToggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        TweenService:Create(ToggleButton, TweenInfo.new(0.2), {
                             BackgroundColor3 = _G.Accent
                         }):Play()
-                        TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-                            Position = UDim2.new(1, isMobileLayout and -14 or -16, 0, 0)
-                        }):Play()
-                        TweenService:Create(Label, TweenInfo.new(0.2), {
-                            TextColor3 = _G.AccentLight
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.2), {
+                            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                            Position = UDim2.new(1, isMobileLayout and -16 or -18, 0, 2)
                         }):Play()
                     else
-                        TweenService:Create(ToggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        TweenService:Create(ToggleButton, TweenInfo.new(0.2), {
                             BackgroundColor3 = _G.Border
                         }):Play()
-                        TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-                            Position = UDim2.new(0, 0, 0, 0)
-                        }):Play()
-                        TweenService:Create(Label, TweenInfo.new(0.2), {
-                            TextColor3 = _G.TextPrimary
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.2), {
+                            BackgroundColor3 = _G.TextSecondary,
+                            Position = UDim2.new(0, 2, 0, 2)
                         }):Play()
                     end
                     pcall(callback, toggled)
                 end
-
-                Toggle.MouseEnter:Connect(function()
-                    TweenService:Create(ToggleStroke, TweenInfo.new(0.2), {
-                        Color = _G.BorderLight,
-                        Transparency = 0.3
-                    }):Play()
-                    TweenService:Create(ToggleGlow, TweenInfo.new(0.25), {
-                        BackgroundTransparency = 0.92
-                    }):Play()
-                end)
-
-                Toggle.MouseLeave:Connect(function()
-                    TweenService:Create(ToggleStroke, TweenInfo.new(0.2), {
-                        Color = _G.Border,
-                        Transparency = 0.5
-                    }):Play()
-                    TweenService:Create(ToggleGlow, TweenInfo.new(0.25), {
-                        BackgroundTransparency = 1
-                    }):Play()
-                end)
 
                 ToggleButton.MouseButton1Click:Connect(function()
                     updateState(not toggled)
@@ -1370,17 +1182,17 @@ if IKAI then
                 local Slider = Instance.new("Frame")
                 Slider.Name = "Slider"
                 Slider.Parent = MainFramePage
-                Slider.BackgroundColor3 = _G.Surface
-                Slider.BackgroundTransparency = 0.9
+                Slider.BackgroundColor3 = _G.SurfaceLight
+                Slider.BackgroundTransparency = 0.85
                 Slider.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 50 or 60)
 
                 local SliderCorner = Instance.new("UICorner")
-                SliderCorner.CornerRadius = UDim.new(0, 6)
+                SliderCorner.CornerRadius = UDim.new(0, 8)
                 SliderCorner.Parent = Slider
 
                 local SliderStroke = Instance.new("UIStroke")
                 SliderStroke.Parent = Slider
-                SliderStroke.Color = _G.Border
+                SliderStroke.Color = _G.GlassBorder
                 SliderStroke.Thickness = 1
 
                 local SliderLabel = Instance.new("TextLabel")
@@ -1443,8 +1255,8 @@ if IKAI then
 
                 local KnobStroke = Instance.new("UIStroke")
                 KnobStroke.Parent = SliderKnob
-                KnobStroke.Color = _G.Border
-                KnobStroke.Thickness = 1
+                KnobStroke.Color = _G.Accent
+                KnobStroke.Thickness = 1.5
 
                 local mouse = game.Players.LocalPlayer:GetMouse()
                 local uis = game:GetService("UserInputService")
@@ -2180,8 +1992,8 @@ if IKAI then
 
                 
                 local theme = {
-                    Surface = _G.Surface,
-                    Border = _G.Border,
+                    Surface = _G.SurfaceLight,
+                    Border = _G.GlassBorder,
                     TextPrimary = _G.TextPrimary,
                     TextSecondary = _G.TextSecondary,
                     Accent = _G.Accent,
@@ -2206,13 +2018,13 @@ if IKAI then
                 Dropdown.Name = "Dropdown"
                 Dropdown.AnchorPoint = Vector2.new(0.5, 0)
                 Dropdown.BackgroundColor3 = theme.Surface
-                Dropdown.BackgroundTransparency = 0.9
+                Dropdown.BackgroundTransparency = 0.85
                 Dropdown.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
                 Dropdown.ClipsDescendants = true
                 Dropdown.Parent = MainFramePage
 
                 local DropdownCorner = Instance.new("UICorner")
-                DropdownCorner.CornerRadius = UDim.new(0, 6)
+                DropdownCorner.CornerRadius = UDim.new(0, 8)
                 DropdownCorner.Parent = Dropdown
 
                 local DropdownStroke = Instance.new("UIStroke")
@@ -2811,17 +2623,17 @@ if IKAI then
                 local Textbox = Instance.new("Frame")
                 Textbox.Name = "Textbox"
                 Textbox.Parent = MainFramePage
-                Textbox.BackgroundColor3 = _G.Surface
-                Textbox.BackgroundTransparency = 0.9
+                Textbox.BackgroundColor3 = _G.SurfaceLight
+                Textbox.BackgroundTransparency = 0.85
                 Textbox.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
 
                 local TextboxCorner = Instance.new("UICorner")
-                TextboxCorner.CornerRadius = UDim.new(0, 6)
+                TextboxCorner.CornerRadius = UDim.new(0, 8)
                 TextboxCorner.Parent = Textbox
 
                 local TextboxStroke = Instance.new("UIStroke")
                 TextboxStroke.Parent = Textbox
-                TextboxStroke.Color = _G.Border
+                TextboxStroke.Color = _G.GlassBorder
                 TextboxStroke.Thickness = 1
 
                 local Label = Instance.new("TextLabel")
@@ -2840,19 +2652,19 @@ if IKAI then
                 local InputContainer = Instance.new("Frame")
                 InputContainer.Name = "InputContainer"
                 InputContainer.Parent = Textbox
-                InputContainer.BackgroundColor3 = _G.Surface
-                InputContainer.BackgroundTransparency = 0.9
+                InputContainer.BackgroundColor3 = _G.SurfaceLight
+                InputContainer.BackgroundTransparency = 0.85
                 InputContainer.Position = UDim2.new(0, isMobileLayout and 135 or 170, 0, isMobileLayout and 4 or 6)
                 InputContainer.Size = UDim2.new(0, elementWidth - (isMobileLayout and 145 or 180), 0, isMobileLayout and 24 or 24)
                 InputContainer.ClipsDescendants = true
 
                 local InputContainerCorner = Instance.new("UICorner")
-                InputContainerCorner.CornerRadius = UDim.new(0, 4)
+                InputContainerCorner.CornerRadius = UDim.new(0, 6)
                 InputContainerCorner.Parent = InputContainer
 
                 local InputContainerStroke = Instance.new("UIStroke")
                 InputContainerStroke.Parent = InputContainer
-                InputContainerStroke.Color = _G.Border
+                InputContainerStroke.Color = _G.GlassBorder
                 InputContainerStroke.Thickness = 1
                 InputContainerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
@@ -2958,9 +2770,9 @@ if IKAI then
                 Label.Parent = MainFramePage
                 Label.BackgroundTransparency = 1
                 Label.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 25 or 30)
-                Label.Font = Enum.Font.GothamMedium
+                Label.Font = Enum.Font.GothamSemibold
                 Label.Text = text
-                Label.TextColor3 = _G.TextPrimary
+                Label.TextColor3 = _G.AccentLight
                 Label.TextSize = isMobileLayout and 12 or 14
                 Label.TextXAlignment = Enum.TextXAlignment.Center
 
@@ -2984,11 +2796,11 @@ if IKAI then
                 local Line1 = Instance.new("Frame")
                 Line1.Name = "Line1"
                 Line1.Parent = Seperator
-                Line1.BackgroundColor3 = _G.Border
+                Line1.BackgroundColor3 = _G.GlassBorder
                 Line1.BorderSizePixel = 0
                 Line1.AnchorPoint = Vector2.new(0, 0.5)
                 Line1.Position = UDim2.new(0, 0, 0.5, 0)
-                Line1.Size = UDim2.new(0.4, -10, 0, 1)
+                Line1.Size = UDim2.new(0.4, -10, 0, 1.5)
 
                 local Label = Instance.new("TextLabel")
                 Label.Name = "Label"
@@ -2997,7 +2809,7 @@ if IKAI then
                 Label.AnchorPoint = Vector2.new(0.5, 0)
                 Label.Position = UDim2.new(0.5, 0, 0, 0)
                 Label.Size = UDim2.new(0, isMobileLayout and 100 or 140, 1, 0)
-                Label.Font = Enum.Font.GothamMedium
+                Label.Font = Enum.Font.GothamSemibold
                 Label.Text = text
                 Label.TextColor3 = _G.TextSecondary
                 Label.TextSize = isMobileLayout and 10 or 12
@@ -3007,11 +2819,11 @@ if IKAI then
                 local Line2 = Instance.new("Frame")
                 Line2.Name = "Line2"
                 Line2.Parent = Seperator
-                Line2.BackgroundColor3 = _G.Border
+                Line2.BackgroundColor3 = _G.GlassBorder
                 Line2.BorderSizePixel = 0
                 Line2.AnchorPoint = Vector2.new(1, 0.5)
                 Line2.Position = UDim2.new(1, 0, 0.5, 0)
-                Line2.Size = UDim2.new(0.4, -10, 0, 1)
+                Line2.Size = UDim2.new(0.4, -10, 0, 1.5)
             end
             return main
         end
