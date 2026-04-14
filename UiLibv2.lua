@@ -1,4 +1,3 @@
--- v5
 -- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
@@ -967,7 +966,7 @@ function Library:_CreateContentArea()
         Name = "TabsContainer",
         ScrollBarThickness = 0,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 0, 0, 36),
+        Position = UDim2.new(0, 10, 0, 36),
         Size = UDim2.new(0, 165, 1, -36),
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -1592,6 +1591,7 @@ function Library._SelectTab(lib, tab, btn, stroke, icon, textLabel)
         CreateTween(lib.currentTab.iconLabel, {ImageColor3 = c.TextDark}, animationspeed.Fast)
         CreateTween(lib.currentTab.textLabel, {TextColor3 = c.TextDark}, animationspeed.Fast)
         lib.currentTab.stroke.Transparency = 0.7
+        lib.currentTab.stroke.Color = c.Border -- Reset stroke color to default
     end
     
     lib.currentTab = tab
