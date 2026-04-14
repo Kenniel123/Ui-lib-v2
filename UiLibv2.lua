@@ -1,3 +1,4 @@
+--v3 
 -- v3 
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -535,6 +536,29 @@ if IKAI then
     BindStroke.Color = _G.GlassBorder
     BindStroke.Thickness = 1
 
+    -- Bind button hover effects
+    BindButton.MouseEnter:Connect(function()
+        TweenService:Create(BindButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundTransparency = 0.3,
+            TextColor3 = _G.AccentLight
+        }):Play()
+        TweenService:Create(BindStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            Color = _G.Accent,
+            Transparency = 0.3
+        }):Play()
+    end)
+
+    BindButton.MouseLeave:Connect(function()
+        TweenService:Create(BindButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundTransparency = 0.4,
+            TextColor3 = _G.TextSecondary
+        }):Play()
+        TweenService:Create(BindStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            Color = _G.GlassBorder,
+            Transparency = 0
+        }):Play()
+    end)
+
     -- MINIMIZE BUTTON - MODERN STYLE
     local MinimizeBtn = Instance.new("TextButton")
     MinimizeBtn.Parent = Top
@@ -542,9 +566,9 @@ if IKAI then
     MinimizeBtn.BackgroundTransparency = 0.4
     MinimizeBtn.Position = UDim2.new(1, isMobileLayout and -32 or -38, isMobileLayout and 0.1 or 0.15, 0)
     MinimizeBtn.Size = isMobileLayout and UDim2.new(0, 30, 0, 30) or UDim2.new(0, 28, 0, 28)
-    MinimizeBtn.Text = "-"
+    MinimizeBtn.Text = "−"
     MinimizeBtn.Font = Enum.Font.GothamBold
-    MinimizeBtn.TextSize = isMobileLayout and 20 or 18
+    MinimizeBtn.TextSize = isMobileLayout and 22 or 20
     MinimizeBtn.TextColor3 = _G.TextSecondary
     MinimizeBtn.AutoButtonColor = false
     MinimizeBtn.ZIndex = 3
@@ -557,6 +581,29 @@ if IKAI then
     MinStroke.Parent = MinimizeBtn
     MinStroke.Color = _G.GlassBorder
     MinStroke.Thickness = 1
+
+    -- Minimize button hover effects
+    MinimizeBtn.MouseEnter:Connect(function()
+        TweenService:Create(MinimizeBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundTransparency = 0.3,
+            TextColor3 = _G.AccentLight
+        }):Play()
+        TweenService:Create(MinStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            Color = _G.Accent,
+            Transparency = 0.3
+        }):Play()
+    end)
+
+    MinimizeBtn.MouseLeave:Connect(function()
+        TweenService:Create(MinimizeBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundTransparency = 0.4,
+            TextColor3 = _G.TextSecondary
+        }):Play()
+        TweenService:Create(MinStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            Color = _G.GlassBorder,
+            Transparency = 0
+        }):Play()
+    end)
 
     -- CONTINUE YOUR CODE...
     local MiniFrame
@@ -842,7 +889,7 @@ if IKAI then
             ActiveIndicator.Name = "ActiveIndicator"
             ActiveIndicator.Parent = TabButton
             ActiveIndicator.BackgroundColor3 = _G.Accent
-            ActiveIndicator.BackgroundTransparency = 0.2
+            ActiveIndicator.BackgroundTransparency = 0.15
             ActiveIndicator.Size = UDim2.new(0, 3, 0.6, 0)
             ActiveIndicator.Position = UDim2.new(0, 0, 0.5, 0)
             ActiveIndicator.AnchorPoint = Vector2.new(0, 0.5)
@@ -853,6 +900,21 @@ if IKAI then
             local IndicatorCorner = Instance.new("UICorner")
             IndicatorCorner.CornerRadius = UDim.new(1, 0)
             IndicatorCorner.Parent = ActiveIndicator
+
+            -- Subtle hover overlay
+            local HoverOverlay = Instance.new("Frame")
+            HoverOverlay.Name = "HoverOverlay"
+            HoverOverlay.Parent = TabButton
+            HoverOverlay.BackgroundColor3 = _G.Accent
+            HoverOverlay.BackgroundTransparency = 0.95
+            HoverOverlay.Size = UDim2.new(1, 0, 1, 0)
+            HoverOverlay.BorderSizePixel = 0
+            HoverOverlay.Visible = true
+            HoverOverlay.ZIndex = 0
+
+            local HoverOverlayCorner = Instance.new("UICorner")
+            HoverOverlayCorner.CornerRadius = UDim.new(0, 10)
+            HoverOverlayCorner.Parent = HoverOverlay
             
             local MainFramePage = Instance.new("ScrollingFrame")
             MainFramePage.Name = text .. "_Page"
@@ -892,6 +954,13 @@ if IKAI then
                         if indicator then
                             indicator.Visible = false
                         end
+                        -- Reset hover overlay
+                        local hover = v:FindFirstChild("HoverOverlay")
+                        if hover then
+                            TweenService:Create(hover, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
+                                BackgroundTransparency = 0.95
+                            }):Play()
+                        end
                     end
                 end
                 TweenService:Create(
@@ -908,11 +977,35 @@ if IKAI then
                     {BackgroundTransparency = 0.1}
                 ):Play()
                 
+                -- Subtle accent tint on active tab
+                TweenService:Create(
+                    HoverOverlay,
+                    TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                    {BackgroundTransparency = 0.88}
+                ):Play()
+                
                 for i, v in next, PageList:GetChildren() do
                     currentpage = string.gsub(TabButton.Name, "Server", "") .. "_Page"
                     if v.Name == currentpage then
                         UIPageLayout:JumpTo(v)
                     end
+                end
+            end)
+            
+            -- Tab hover effects
+            TabButton.MouseEnter:Connect(function()
+                if not ActiveIndicator.Visible then
+                    TweenService:Create(HoverOverlay, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+                        BackgroundTransparency = 0.92
+                    }):Play()
+                end
+            end)
+            
+            TabButton.MouseLeave:Connect(function()
+                if not ActiveIndicator.Visible then
+                    TweenService:Create(HoverOverlay, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+                        BackgroundTransparency = 0.95
+                    }):Play()
                 end
             end)
             
@@ -1012,20 +1105,24 @@ if IKAI then
                 
                 Button.MouseEnter:Connect(function()
                     TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        BackgroundTransparency = 0.85
+                        BackgroundTransparency = 0.8
                     }):Play()
                     TweenService:Create(ButtonInner, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        BackgroundTransparency = 0.9
+                        BackgroundTransparency = 0.85
                     }):Play()
                     TweenService:Create(ButtonStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
                         Color = _G.Accent,
-                        Transparency = 0.2
+                        Transparency = 0.1,
+                        Thickness = 2
                     }):Play()
                     TweenService:Create(ButtonGlow, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        ImageTransparency = 0.85
+                        ImageTransparency = 0.8,
+                        Size = UDim2.new(1, 15, 1, 15),
+                        Position = UDim2.new(0, -7.5, 0, -7.5)
                     }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        TextColor3 = _G.AccentLight
+                        TextColor3 = _G.AccentLight,
+                        TextSize = isMobileLayout and 13 or 15
                     }):Play()
                 end)
 
@@ -1038,13 +1135,17 @@ if IKAI then
                     }):Play()
                     TweenService:Create(ButtonStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
                         Color = _G.Border,
-                        Transparency = 0.4
+                        Transparency = 0.4,
+                        Thickness = 1.5
                     }):Play()
                     TweenService:Create(ButtonGlow, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        ImageTransparency = 0.95
+                        ImageTransparency = 0.95,
+                        Size = UDim2.new(1, 10, 1, 10),
+                        Position = UDim2.new(0, -5, 0, -5)
                     }):Play()
                     TweenService:Create(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        TextColor3 = _G.TextPrimary
+                        TextColor3 = _G.TextPrimary,
+                        TextSize = isMobileLayout and 12 or 14
                     }):Play()
                 end)
 
@@ -1231,17 +1332,35 @@ if IKAI then
                             BackgroundColor3 = _G.Accent
                         }):Play()
                         TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
-                            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                            BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        }):Play()
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
                             Position = UDim2.new(1, -knobOffset, 0.5, 0)
                         }):Play()
+                        -- Add subtle border to knob when ON for visibility
+                        if not ToggleKnob:FindFirstChild("KnobBorder") then
+                            local KnobBorder = Instance.new("UIStroke")
+                            KnobBorder.Name = "KnobBorder"
+                            KnobBorder.Parent = ToggleKnob
+                            KnobBorder.Color = _G.AccentDark
+                            KnobBorder.Thickness = 1.5
+                            KnobBorder.Transparency = 0.3
+                        end
                     else
                         TweenService:Create(ToggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
                             BackgroundColor3 = _G.Border
                         }):Play()
                         TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
-                            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                            BackgroundColor3 = Color3.fromRGB(240, 240, 245)
+                        }):Play()
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
                             Position = UDim2.new(0, 3, 0.5, 0)
                         }):Play()
+                        -- Remove border when OFF
+                        local KnobBorder = ToggleKnob:FindFirstChild("KnobBorder")
+                        if KnobBorder then
+                            KnobBorder:Destroy()
+                        end
                     end
                     pcall(callback, toggled)
                 end
@@ -1330,16 +1449,30 @@ if IKAI then
                 SliderTrackCorner.CornerRadius = UDim.new(1, 0)
                 SliderTrackCorner.Parent = SliderTrack
 
-                -- Slider fill (progress)
+                -- Slider fill (progress) with gradient effect
                 local SliderFill = Instance.new("Frame")
                 SliderFill.Parent = SliderTrack
                 SliderFill.BackgroundColor3 = _G.Accent
-                SliderFill.BackgroundTransparency = 0.2
+                SliderFill.BackgroundTransparency = 0.15
                 SliderFill.Size = UDim2.new(0, 0, 1, 0)
 
                 local SliderFillCorner = Instance.new("UICorner")
                 SliderFillCorner.CornerRadius = UDim.new(1, 0)
                 SliderFillCorner.Parent = SliderFill
+
+                -- Subtle glow on fill
+                local SliderFillGlow = Instance.new("ImageLabel")
+                SliderFillGlow.Name = "SliderFillGlow"
+                SliderFillGlow.Parent = SliderFill
+                SliderFillGlow.BackgroundTransparency = 1
+                SliderFillGlow.Size = UDim2.new(1, 6, 1, 6)
+                SliderFillGlow.Position = UDim2.new(0, -3, 0, -3)
+                SliderFillGlow.Image = "rbxassetid://131604814"
+                SliderFillGlow.ImageTransparency = 0.85
+                SliderFillGlow.ImageColor3 = _G.Accent
+                SliderFillGlow.ScaleType = Enum.ScaleType.Slice
+                SliderFillGlow.SliceCenter = Rect.new(25, 25, 275, 275)
+                SliderFillGlow.ZIndex = 0
 
                 -- Invisible button for interaction
                 local SliderButton = Instance.new("TextButton")
@@ -1379,7 +1512,18 @@ if IKAI then
                 KnobStroke.Parent = SliderKnob
                 KnobStroke.Color = _G.Accent
                 KnobStroke.Thickness = 2
-                KnobStroke.Transparency = 0.3
+                KnobStroke.Transparency = 0.2
+
+                -- Subtle gradient overlay on knob
+                local KnobGradient = Instance.new("ImageLabel")
+                KnobGradient.Name = "KnobGradient"
+                KnobGradient.Parent = SliderKnob
+                KnobGradient.BackgroundTransparency = 1
+                KnobGradient.Size = UDim2.new(1, 0, 0.5, 0)
+                KnobGradient.Image = "rbxassetid://8929143573"
+                KnobGradient.ImageTransparency = 0.7
+                KnobGradient.ImageColor3 = Color3.fromRGB(255, 255, 255)
+                KnobGradient.ZIndex = 1
 
                 local mouse = game.Players.LocalPlayer:GetMouse()
                 local uis = game:GetService("UserInputService")
@@ -2793,6 +2937,21 @@ if IKAI then
                 InputContainerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 InputContainerStroke.Transparency = 0.4
 
+                -- Modern focus indicator line at bottom
+                local FocusIndicator = Instance.new("Frame")
+                FocusIndicator.Name = "FocusIndicator"
+                FocusIndicator.Parent = InputContainer
+                FocusIndicator.BackgroundColor3 = _G.Accent
+                FocusIndicator.BackgroundTransparency = 0.3
+                FocusIndicator.Position = UDim2.new(0, 0, 1, -2)
+                FocusIndicator.Size = UDim2.new(0, 0, 0, 2)
+                FocusIndicator.BorderSizePixel = 0
+                FocusIndicator.Visible = false
+
+                local FocusIndicatorCorner = Instance.new("UICorner")
+                FocusIndicatorCorner.CornerRadius = UDim.new(1, 0)
+                FocusIndicatorCorner.Parent = FocusIndicator
+
                 local Input = Instance.new("TextBox")
                 Input.Name = "Input"
                 Input.Parent = InputContainer
@@ -2813,6 +2972,7 @@ if IKAI then
 
                 Input.Focused:Connect(function()
                     isFocused = true
+                    FocusIndicator.Visible = true
                     TweenService:Create(InputContainerStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
                         Color = _G.Accent,
                         Transparency = 0.2
@@ -2820,10 +2980,21 @@ if IKAI then
                     TweenService:Create(InputContainer, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
                         BackgroundTransparency = 0.4
                     }):Play()
+                    TweenService:Create(FocusIndicator, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
+                        Size = UDim2.new(1, 0, 0, 2),
+                        BackgroundTransparency = 0.1
+                    }):Play()
                 end)
 
                 Input.FocusLost:Connect(function()
                     isFocused = false
+                    TweenService:Create(FocusIndicator, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+                        Size = UDim2.new(0, 0, 0, 2),
+                        BackgroundTransparency = 0.3
+                    }):Play()
+                    task.delay(0.2, function()
+                        FocusIndicator.Visible = false
+                    end)
                     TweenService:Create(InputContainerStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
                         Color = _G.Border,
                         Transparency = 0.4
@@ -2894,11 +3065,30 @@ if IKAI then
             end
 
             function main:Label(text)
+                local LabelContainer = Instance.new("Frame")
+                LabelContainer.Name = "LabelContainer"
+                LabelContainer.Parent = MainFramePage
+                LabelContainer.BackgroundTransparency = 1
+                LabelContainer.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 28 or 32)
+
+                -- Subtle background for label
+                local LabelBG = Instance.new("Frame")
+                LabelBG.Name = "LabelBG"
+                LabelBG.Parent = LabelContainer
+                LabelBG.BackgroundColor3 = _G.Accent
+                LabelBG.BackgroundTransparency = 0.92
+                LabelBG.Size = UDim2.new(1, 0, 1, 0)
+                LabelBG.BorderSizePixel = 0
+
+                local LabelBGCorner = Instance.new("UICorner")
+                LabelBGCorner.CornerRadius = UDim.new(0, 8)
+                LabelBGCorner.Parent = LabelBG
+
                 local Label = Instance.new("TextLabel")
                 Label.Name = "Label"
-                Label.Parent = MainFramePage
+                Label.Parent = LabelContainer
                 Label.BackgroundTransparency = 1
-                Label.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 28 or 32)
+                Label.Size = UDim2.new(1, 0, 1, 0)
                 Label.Font = Enum.Font.GothamBold
                 Label.Text = text
                 Label.TextColor3 = _G.AccentLight
@@ -2920,21 +3110,36 @@ if IKAI then
                 Seperator.Name = "Seperator"
                 Seperator.Parent = MainFramePage
                 Seperator.BackgroundTransparency = 1
-                Seperator.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 20 or 24)
+                Seperator.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 24 or 28)
 
+                -- Left line with gradient effect
                 local Line1 = Instance.new("Frame")
                 Line1.Name = "Line1"
                 Line1.Parent = Seperator
                 Line1.BackgroundColor3 = _G.GlassBorder
-                Line1.BackgroundTransparency = 0.5
+                Line1.BackgroundTransparency = 0.4
                 Line1.BorderSizePixel = 0
                 Line1.AnchorPoint = Vector2.new(0, 0.5)
                 Line1.Position = UDim2.new(0, 0, 0.5, 0)
-                Line1.Size = UDim2.new(0.4, -10, 0, 2)
+                Line1.Size = UDim2.new(0.38, -10, 0, 2)
 
                 local Line1Corner = Instance.new("UICorner")
                 Line1Corner.CornerRadius = UDim.new(1, 0)
                 Line1Corner.Parent = Line1
+
+                -- Subtle glow on line1
+                local Line1Glow = Instance.new("ImageLabel")
+                Line1Glow.Name = "Line1Glow"
+                Line1Glow.Parent = Line1
+                Line1Glow.BackgroundTransparency = 1
+                Line1Glow.Size = UDim2.new(1, 4, 1, 4)
+                Line1Glow.Position = UDim2.new(0, -2, 0, -2)
+                Line1Glow.Image = "rbxassetid://131604814"
+                Line1Glow.ImageTransparency = 0.85
+                Line1Glow.ImageColor3 = _G.Accent
+                Line1Glow.ScaleType = Enum.ScaleType.Slice
+                Line1Glow.SliceCenter = Rect.new(25, 25, 275, 275)
+                Line1Glow.ZIndex = -1
 
                 local Label = Instance.new("TextLabel")
                 Label.Name = "Label"
@@ -2950,19 +3155,34 @@ if IKAI then
                 Label.RichText = true
                 Label.Text = gradient(text, gradientText)
 
+                -- Right line with gradient effect
                 local Line2 = Instance.new("Frame")
                 Line2.Name = "Line2"
                 Line2.Parent = Seperator
                 Line2.BackgroundColor3 = _G.GlassBorder
-                Line2.BackgroundTransparency = 0.5
+                Line2.BackgroundTransparency = 0.4
                 Line2.BorderSizePixel = 0
                 Line2.AnchorPoint = Vector2.new(1, 0.5)
                 Line2.Position = UDim2.new(1, 0, 0.5, 0)
-                Line2.Size = UDim2.new(0.4, -10, 0, 2)
+                Line2.Size = UDim2.new(0.38, -10, 0, 2)
 
                 local Line2Corner = Instance.new("UICorner")
                 Line2Corner.CornerRadius = UDim.new(1, 0)
                 Line2Corner.Parent = Line2
+
+                -- Subtle glow on line2
+                local Line2Glow = Instance.new("ImageLabel")
+                Line2Glow.Name = "Line2Glow"
+                Line2Glow.Parent = Line2
+                Line2Glow.BackgroundTransparency = 1
+                Line2Glow.Size = UDim2.new(1, 4, 1, 4)
+                Line2Glow.Position = UDim2.new(0, -2, 0, -2)
+                Line2Glow.Image = "rbxassetid://131604814"
+                Line2Glow.ImageTransparency = 0.85
+                Line2Glow.ImageColor3 = _G.Accent
+                Line2Glow.ScaleType = Enum.ScaleType.Slice
+                Line2Glow.SliceCenter = Rect.new(25, 25, 275, 275)
+                Line2Glow.ZIndex = -1
             end
             return main
         end
