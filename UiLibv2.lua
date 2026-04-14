@@ -1,4 +1,4 @@
--- v2
+-- v3
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
 local plr = game:GetService("Players")
@@ -1940,9 +1940,15 @@ function Library._CreateToggle(tab, config)
 
     local function UpdateToggle()
         if enabled then
+            switchBg.BackgroundColor3 = c.Toggle.Enabled
+            switchCircle.Position = UDim2.new(0, 22, 0.5, 0)
+            switchCircle.BackgroundColor3 = c.Toggle.Enabled
             CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
             CreateTween(switchCircle, {Position = UDim2.new(0, 22, 0.5, 0), BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
         else
+            switchBg.BackgroundColor3 = c.Toggle.Disabled
+            switchCircle.Position = UDim2.new(0, 4, 0.5, 0)
+            switchCircle.BackgroundColor3 = c.Toggle.Circle
             CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Disabled}, animationspeed.Normal)
             CreateTween(switchCircle, {Position = UDim2.new(0, 4, 0.5, 0), BackgroundColor3 = c.Toggle.Circle}, animationspeed.Normal)
         end
