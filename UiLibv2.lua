@@ -1,4 +1,5 @@
--- v3
+-- v4 
+-- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
 local plr = game:GetService("Players")
@@ -21,8 +22,8 @@ local c = {
     SurfaceHover = Color3.fromRGB(30, 30, 35),
     Toggle = {
         Enabled = Color3.fromRGB(99, 138, 255),
-        Disabled = Color3.fromRGB(38, 38, 42),
-        Circle = Color3.fromRGB(25, 25, 28)
+        Disabled = Color3.fromRGB(255, 255, 255),
+        Circle = Color3.fromRGB(255, 255, 255)
     },
     Notification = {
         Background = Color3.fromRGB(14, 14, 17),
