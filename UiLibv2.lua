@@ -1,4 +1,3 @@
---v3
 -- v2
 local ts = game:GetService("TweenService")
 local ui = game:GetService("UserInputService")
@@ -1807,7 +1806,7 @@ function Library._CreateButton(tab, config)
         Parent = tab.content
     })
     CreateCorner(frame, 8)
-
+    CreateStroke(frame, c.Border, 0.6)
 
     local nameLabel = CreateInstance("TextLabel", {
         Name = "Name",
@@ -1941,11 +1940,21 @@ function Library._CreateToggle(tab, config)
 
     local function UpdateToggle()
         if enabled then
-            CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Enabled}, animationspeed.Normal)
-            CreateTween(switchCircle, {Position = UDim2.new(0, 21, 0.5, 0)}, animationspeed.Normal)
+            CreateTween(switchBg, {
+                BackgroundColor3 = c.Toggle.Enabled
+            }, animationspeed.Normal)
+
+            CreateTween(switchCircle, {
+                Position = UDim2.new(0, 21, 0.5, 0)
+            }, animationspeed.Normal)
         else
-            CreateTween(switchBg, {BackgroundColor3 = c.Toggle.Disabled}, animationspeed.Normal)
-            CreateTween(switchCircle, {Position = UDim2.new(0, 4, 0.5, 0)}, animationspeed.Normal)
+            CreateTween(switchBg, {
+                BackgroundColor3 = c.Toggle.Disabled
+            }, animationspeed.Normal)
+
+            CreateTween(switchCircle, {
+                Position = UDim2.new(0, 4, 0.5, 0)
+            }, animationspeed.Normal)
         end
     end
 
@@ -1977,7 +1986,9 @@ function Library._CreateToggle(tab, config)
     }
 
     if flag and tab._library then
-        tab._library:_RegisterConfigElement(flag, "Toggle",
+        tab._library:_RegisterConfigElement(
+            flag,
+            "Toggle",
             function() return enabled end,
             function(value) methods:SetValue(value) end
         )
