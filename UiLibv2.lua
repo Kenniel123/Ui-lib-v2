@@ -1,4 +1,3 @@
--- v2
 -- v3 
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -1188,8 +1187,9 @@ if IKAI then
                 ToggleButton.Name = "ToggleButton"
                 ToggleButton.Parent = Toggle
                 ToggleButton.BackgroundColor3 = _G.Border
-                ToggleButton.Position = UDim2.new(1, isMobileLayout and -40 or -50, 0.5, 0)
-                ToggleButton.Size = isMobileLayout and UDim2.new(0, 40, 0, 22) or UDim2.new(0, 46, 0, 26)
+                ToggleButton.Position = UDim2.new(1, isMobileLayout and -42 or -52, 0.5, 0)
+                ToggleButton.AnchorPoint = Vector2.new(0, 0.5)
+                ToggleButton.Size = isMobileLayout and UDim2.new(0, 42, 0, 24) or UDim2.new(0, 48, 0, 28)
                 ToggleButton.Text = ""
                 ToggleButton.AutoButtonColor = false
 
@@ -1204,7 +1204,7 @@ if IKAI then
                 ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 ToggleKnob.Position = UDim2.new(0, 3, 0.5, 0)
                 ToggleKnob.AnchorPoint = Vector2.new(0, 0.5)
-                ToggleKnob.Size = isMobileLayout and UDim2.new(0, 16, 0, 16) or UDim2.new(0, 20, 0, 20)
+                ToggleKnob.Size = isMobileLayout and UDim2.new(0, 18, 0, 18) or UDim2.new(0, 22, 0, 22)
 
                 local ToggleKnobCorner = Instance.new("UICorner")
                 ToggleKnobCorner.CornerRadius = UDim.new(1, 0)
@@ -1226,12 +1226,13 @@ if IKAI then
                 local function updateState(state)
                     toggled = state
                     if toggled then
+                        local knobOffset = isMobileLayout and 21 or 23
                         TweenService:Create(ToggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
                             BackgroundColor3 = _G.Accent
                         }):Play()
                         TweenService:Create(ToggleKnob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
                             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                            Position = UDim2.new(1, isMobileLayout and -20 or -23, 0.5, 0)
+                            Position = UDim2.new(1, -knobOffset, 0.5, 0)
                         }):Play()
                     else
                         TweenService:Create(ToggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
