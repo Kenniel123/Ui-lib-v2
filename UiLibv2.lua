@@ -1959,6 +1959,8 @@ function Library._CreateToggle(tab, config)
         callback(enabled)
     end)
 
+    UpdateToggle() -- Call UpdateToggle to initialize visual state
+
     local methods = {
         SetValue = function(_, value)
             enabled = value
