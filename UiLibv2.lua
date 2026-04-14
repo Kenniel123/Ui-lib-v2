@@ -1,4 +1,4 @@
--- v3 
+--Welcome mate if you're using this ui atleast advertise my script https://discord.gg/88gR5XUpkC thank u
 local function randomString(length)
     local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     local str = ""
@@ -872,293 +872,238 @@ if IKAI then
             local main = {}
             
             function main:Button(text, callback)
-                local Button = Instance.new("TextButton")
+                -- Modern pill-style button container
+                local Button = Instance.new("Frame")
                 Button.Name = "Button"
                 Button.Parent = MainFramePage
-                Button.BackgroundColor3 = _G.SurfaceLight
-                Button.BackgroundTransparency = 0.85
-                Button.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
-                Button.Font = Enum.Font.GothamMedium
-                Button.Text = text
-                Button.TextColor3 = _G.TextPrimary
-                Button.TextSize = isMobileLayout and 12 or 14
-                Button.AutoButtonColor = false
+                Button.BackgroundColor3 = _G.Accent
+                Button.BackgroundTransparency = 0.8
+                Button.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 40 or 44)
+                Button.ClipsDescendants = true
 
                 local ButtonCorner = Instance.new("UICorner")
-                ButtonCorner.CornerRadius = UDim.new(0, 8)
+                ButtonCorner.CornerRadius = UDim.new(0, 12)
                 ButtonCorner.Parent = Button
 
-                local ButtonStroke = Instance.new("UIStroke")
-                ButtonStroke.Parent = Button
-                ButtonStroke.Color = _G.GlassBorder
-                ButtonStroke.Thickness = isMobileLayout and 1.5 or 2
-                ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                -- Gradient overlay
+                local Gradient = Instance.new("ImageLabel")
+                Gradient.Name = "Gradient"
+                Gradient.Parent = Button
+                Gradient.Size = UDim2.new(1, 0, 1, 0)
+                Gradient.Image = "rbxassetid://8929143573"
+                Gradient.BackgroundTransparency = 1
+                Gradient.ImageTransparency = 0.7
+                Gradient.ImageColor3 = _G.AccentLight
+                Gradient.ZIndex = 1
 
-                -- Modern glow effect
-                local ButtonGlow = Instance.new("ImageLabel")
-                ButtonGlow.Name = "ButtonGlow"
-                ButtonGlow.Parent = Button
-                ButtonGlow.Size = UDim2.new(1, 0, 1, 0)
-                ButtonGlow.Image = "rbxassetid://8929143573"
-                ButtonGlow.BackgroundTransparency = 1
-                ButtonGlow.ImageTransparency = 0.9
-                ButtonGlow.ZIndex = 0
+                -- Clickable button area
+                local ClickButton = Instance.new("TextButton")
+                ClickButton.Name = "ClickButton"
+                ClickButton.Parent = Button
+                ClickButton.BackgroundTransparency = 1
+                ClickButton.Size = UDim2.new(1, 0, 1, 0)
+                ClickButton.Text = ""
+                ClickButton.AutoButtonColor = false
+                ClickButton.ZIndex = 5
 
-                
-                local ButtonInner = Instance.new("Frame")
-                ButtonInner.Name = "ButtonInner"
-                ButtonInner.Parent = Button
-                ButtonInner.BackgroundColor3 = _G.SurfaceLight
-                ButtonInner.BackgroundTransparency = 0.9
-                ButtonInner.Size = UDim2.new(1, -4, 1, -4)
-                ButtonInner.Position = UDim2.new(0, 2, 0, 2)
-                ButtonInner.ClipsDescendants = true
+                -- Icon indicator (left side)
+                local IconIndicator = Instance.new("Frame")
+                IconIndicator.Name = "IconIndicator"
+                IconIndicator.Parent = Button
+                IconIndicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                IconIndicator.BackgroundTransparency = 0.3
+                IconIndicator.Position = UDim2.new(0, isMobileLayout and 12 or 16, 0.5, 0)
+                IconIndicator.Size = UDim2.new(0, 4, 0, 20)
+                IconIndicator.AnchorPoint = Vector2.new(0, 0.5)
 
-                local ButtonInnerCorner = Instance.new("UICorner")
-                ButtonInnerCorner.CornerRadius = UDim.new(0, 6)
-                ButtonInnerCorner.Parent = ButtonInner
+                local IconCorner = Instance.new("UICorner")
+                IconCorner.CornerRadius = UDim.new(1, 0)
+                IconCorner.Parent = IconIndicator
 
-                local ButtonInnerStroke = Instance.new("UIStroke")
-                ButtonInnerStroke.Parent = ButtonInner
-                ButtonInnerStroke.Color = _G.GlassBorder
-                ButtonInnerStroke.Thickness = 1
-                ButtonInnerStroke.Transparency = 0.6
-
-                
+                -- Text label with icon space
                 local ButtonText = Instance.new("TextLabel")
                 ButtonText.Name = "ButtonText"
-                ButtonText.Parent = ButtonInner
+                ButtonText.Parent = Button
                 ButtonText.BackgroundTransparency = 1
-                ButtonText.Size = UDim2.new(1, 0, 1, 0)
-                ButtonText.Font = Enum.Font.GothamMedium
+                ButtonText.Position = UDim2.new(0, isMobileLayout and 24 or 30, 0, 0)
+                ButtonText.Size = UDim2.new(1, isMobileLayout and -48 or -60, 1, 0)
+                ButtonText.Font = Enum.Font.GothamSemibold
                 ButtonText.Text = text
-                ButtonText.TextColor3 = _G.TextPrimary
-                ButtonText.TextSize = isMobileLayout and 12 or 14
-                ButtonText.TextXAlignment = Enum.TextXAlignment.Center
+                ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ButtonText.TextSize = isMobileLayout and 13 or 15
+                ButtonText.TextXAlignment = Enum.TextXAlignment.Left
                 ButtonText.TextYAlignment = Enum.TextYAlignment.Center
+                ButtonText.ZIndex = 2
+
+                -- Ripple effect container
+                local RippleContainer = Instance.new("Frame")
+                RippleContainer.Name = "RippleContainer"
+                RippleContainer.Parent = Button
+                RippleContainer.BackgroundTransparency = 1
+                RippleContainer.Size = UDim2.new(1, 0, 1, 0)
+                RippleContainer.ClipsDescendants = true
+                RippleContainer.ZIndex = 3
 
                 
-                Button.MouseEnter:Connect(function()
+                ClickButton.MouseEnter:Connect(function()
                     TweenService:Create(Button, TweenInfo.new(0.2), {
-                        BackgroundTransparency = 0.8
-                    }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.2), {
-                        BackgroundTransparency = 0.85
-                    }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
-                        Color = _G.Accent
-                    }):Play()
-                    TweenService:Create(ButtonGlow, TweenInfo.new(0.2), {
-                        ImageTransparency = 0.7,
-                        ImageColor3 = _G.Accent
-                    }):Play()
-                    TweenService:Create(ButtonText, TweenInfo.new(0.2), {
-                        TextColor3 = _G.AccentLight
-                    }):Play()
-                end)
-
-                Button.MouseLeave:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.2), {
-                        BackgroundTransparency = 0.85
-                    }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.2), {
-                        BackgroundTransparency = 0.9
-                    }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
-                        Color = _G.GlassBorder
-                    }):Play()
-                    TweenService:Create(ButtonGlow, TweenInfo.new(0.2), {
-                        ImageTransparency = 0.9
-                    }):Play()
-                    TweenService:Create(ButtonText, TweenInfo.new(0.2), {
-                        TextColor3 = _G.TextPrimary
-                    }):Play()
-                end)
-
-                
-                Button.MouseButton1Down:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.1), {
-                        BackgroundTransparency = 0.75
-                    }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
-                        BackgroundTransparency = 0.8
-                    }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.1), {
-                        Color = _G.Accent
-                    }):Play()
-                end)
-
-                Button.MouseButton1Up:Connect(function()
-                    TweenService:Create(Button, TweenInfo.new(0.1), {
-                        BackgroundTransparency = 0.8
-                    }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
-                        BackgroundTransparency = 0.85
-                    }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {
-                        Color = _G.Accent
-                    }):Play()
-                end)
-
-                
-                Button.MouseButton1Click:Connect(function()
-                    
-                    TweenService:Create(Button, TweenInfo.new(0.1), {
-                        BackgroundColor3 = _G.Accent,
-                        BackgroundTransparency = 0.6
-                    }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.1), {
-                        BackgroundColor3 = _G.Accent,
                         BackgroundTransparency = 0.7
                     }):Play()
-                    TweenService:Create(ButtonText, TweenInfo.new(0.1), {
-                        TextColor3 = Color3.fromRGB(255, 255, 255)
+                    TweenService:Create(Gradient, TweenInfo.new(0.2), {
+                        ImageTransparency = 0.6
                     }):Play()
-                    
-                    
-                    pcall(callback)
-                    
-                    
-                    task.wait(0.15)
-                    TweenService:Create(Button, TweenInfo.new(0.3), {
-                        BackgroundColor3 = _G.Surface,
-                        BackgroundTransparency = 0.9
+                end)
+
+                ClickButton.MouseLeave:Connect(function()
+                    TweenService:Create(Button, TweenInfo.new(0.2), {
+                        BackgroundTransparency = 0.8
                     }):Play()
-                    TweenService:Create(ButtonInner, TweenInfo.new(0.3), {
-                        BackgroundColor3 = _G.Surface,
-                        BackgroundTransparency = 0.95
-                    }):Play()
-                    TweenService:Create(ButtonText, TweenInfo.new(0.3), {
-                        TextColor3 = _G.TextPrimary
-                    }):Play()
-                    TweenService:Create(ButtonStroke, TweenInfo.new(0.3), {
-                        Color = _G.Border
+                    TweenService:Create(Gradient, TweenInfo.new(0.2), {
+                        ImageTransparency = 0.7
                     }):Play()
                 end)
 
                 
-                local ButtonObject = {}
+                ClickButton.MouseButton1Down:Connect(function()
+                    TweenService:Create(Button, TweenInfo.new(0.1), {
+                        BackgroundTransparency = 0.6
+                    }):Play()
+                    
+                    -- Create ripple effect
+                    local ripple = Instance.new("Frame")
+                    ripple.Parent = RippleContainer
+                    ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    ripple.BackgroundTransparency = 0.7
+                    ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
+                    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+                    ripple.Size = UDim2.new(0, 0, 0, 0)
+                    ripple.ZIndex = 3
+                    
+                    local rippleCorner = Instance.new("UICorner")
+                    rippleCorner.CornerRadius = UDim.new(1, 0)
+                    rippleCorner.Parent = ripple
+                    
+                    TweenService:Create(ripple, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        Size = UDim2.new(2, 0, 2, 0),
+                        BackgroundTransparency = 1
+                    }):Play()
+                    
+                    game:GetService("Debris"):AddItem(ripple, 0.6)
+                end)
 
-                function ButtonObject:Set(newText, newCallback)
-					if newText then
-						ButtonText.Text = newText
-						Button.Text = newText
-					end
-					if newCallback then
-						callback = newCallback
-					end
-					return ButtonObject
-				end
+                ClickButton.MouseButton1Up:Connect(function()
+                    TweenService:Create(Button, TweenInfo.new(0.1), {
+                        BackgroundTransparency = 0.7
+                    }):Play()
+                end)
 
-                function ButtonObject:SetColor(color)
-                    ButtonText.TextColor3 = color
-                    return ButtonObject
+                
+                ClickButton.MouseButton1Click:Connect(function()
+                    pcall(callback)
+                end)
+
+                local ButtonAPI = {}
+                function ButtonAPI:SetText(newText)
+                    ButtonText.Text = newText
                 end
-
-                function ButtonObject:SetAccentColor(color)
-                    _G.Accent = color
-                    return ButtonObject
-                end
-
-                function ButtonObject:SetEnabled(enabled)
-                    Button.AutoButtonColor = false
-                    Button.Active = enabled
-                    if enabled then
-                        ButtonText.TextColor3 = _G.TextPrimary
-                        Button.BackgroundTransparency = 0.9
-                    else
-                        ButtonText.TextColor3 = _G.TextSecondary
-                        Button.BackgroundTransparency = 0.95
-                    end
-                    return ButtonObject
-                end
-
-                function ButtonObject:GetText()
+                function ButtonAPI:GetText()
                     return ButtonText.Text
                 end
-
-                return ButtonObject
+                return ButtonAPI
             end
 
             function main:Toggle(text, config, callback)
                 config = config or false
                 local toggled = config
 
+                -- Modern toggle container
                 local Toggle = Instance.new("Frame")
                 Toggle.Name = "Toggle"
                 Toggle.Parent = MainFramePage
                 Toggle.BackgroundColor3 = _G.SurfaceLight
-                Toggle.BackgroundTransparency = 0.85
-                Toggle.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 32 or 36)
+                Toggle.BackgroundTransparency = 0.9
+                Toggle.Size = UDim2.new(0, elementWidth, 0, isMobileLayout and 44 or 48)
 
                 local ToggleCorner = Instance.new("UICorner")
-                ToggleCorner.CornerRadius = UDim.new(0, 8)
+                ToggleCorner.CornerRadius = UDim.new(0, 12)
                 ToggleCorner.Parent = Toggle
 
-                local ToggleStroke = Instance.new("UIStroke")
-                ToggleStroke.Parent = Toggle
-                ToggleStroke.Color = _G.GlassBorder
-                ToggleStroke.Thickness = 1
-
+                -- Label on left
                 local Label = Instance.new("TextLabel")
                 Label.Name = "Label"
                 Label.Parent = Toggle
                 Label.BackgroundTransparency = 1
-                Label.Position = UDim2.new(0, isMobileLayout and 10 or 15, 0, 0)
-                Label.Size = UDim2.new(0, isMobileLayout and 200 or 300, 1, 0)
-                Label.Font = Enum.Font.GothamMedium
+                Label.Position = UDim2.new(0, isMobileLayout and 14 or 18, 0, 0)
+                Label.Size = UDim2.new(0, elementWidth - (isMobileLayout and 80 or 90), 1, 0)
+                Label.Font = Enum.Font.GothamSemibold
                 Label.Text = text
                 Label.TextColor3 = _G.TextPrimary
-                Label.TextSize = isMobileLayout and 12 or 14
+                Label.TextSize = isMobileLayout and 13 or 15
                 Label.TextXAlignment = Enum.TextXAlignment.Left
+                Label.TextYAlignment = Enum.TextYAlignment.Center
 
-                local ToggleButton = Instance.new("TextButton")
-                ToggleButton.Name = "ToggleButton"
-                ToggleButton.Parent = Toggle
-                ToggleButton.BackgroundColor3 = _G.Border
-                ToggleButton.Position = UDim2.new(1, isMobileLayout and -35 or -45, 0.5, isMobileLayout and -8 or -10)
-                ToggleButton.Size = isMobileLayout and UDim2.new(0, 35, 0, 18) or UDim2.new(0, 40, 0, 20)
-                ToggleButton.Text = ""
-                ToggleButton.AutoButtonColor = false
+                -- iOS-style toggle switch
+                local ToggleSwitch = Instance.new("TextButton")
+                ToggleSwitch.Name = "ToggleSwitch"
+                ToggleSwitch.Parent = Toggle
+                ToggleSwitch.BackgroundColor3 = _G.Border
+                ToggleSwitch.Position = UDim2.new(1, isMobileLayout and -66 or -74, 0.5, 0)
+                ToggleSwitch.Size = isMobileLayout and UDim2.new(0, 52, 0, 28) or UDim2.new(0, 56, 0, 30)
+                ToggleSwitch.Text = ""
+                ToggleSwitch.AutoButtonColor = false
+                ToggleSwitch.AnchorPoint = Vector2.new(0, 0.5)
 
-                local ToggleCorner2 = Instance.new("UICorner")
-                ToggleCorner2.CornerRadius = UDim.new(1, 0)
-                ToggleCorner2.Parent = ToggleButton
+                local SwitchCorner = Instance.new("UICorner")
+                SwitchCorner.CornerRadius = UDim.new(1, 0)
+                SwitchCorner.Parent = ToggleSwitch
 
+                -- Toggle knob
                 local ToggleKnob = Instance.new("Frame")
                 ToggleKnob.Name = "ToggleKnob"
-                ToggleKnob.Parent = ToggleButton
-                ToggleKnob.BackgroundColor3 = _G.TextSecondary
-                ToggleKnob.Position = UDim2.new(0, 2, 0, 2)
-                ToggleKnob.Size = isMobileLayout and UDim2.new(0, 14, 0, 14) or UDim2.new(0, 16, 0, 16)
+                ToggleKnob.Parent = ToggleSwitch
+                ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                ToggleKnob.Position = UDim2.new(0, isMobileLayout and 3 or 4, 0.5, 0)
+                ToggleKnob.Size = UDim2.new(0, isMobileLayout and 22 or 24, 0, isMobileLayout and 22 or 24)
+                ToggleKnob.AnchorPoint = Vector2.new(0, 0.5)
 
-                local ToggleKnobCorner = Instance.new("UICorner")
-                ToggleKnobCorner.CornerRadius = UDim.new(1, 0)
-                ToggleKnobCorner.Parent = ToggleKnob
+                local KnobCorner = Instance.new("UICorner")
+                KnobCorner.CornerRadius = UDim.new(1, 0)
+                KnobCorner.Parent = ToggleKnob
+
+                -- Knob shadow
+                local KnobShadow = Instance.new("ImageLabel")
+                KnobShadow.Name = "KnobShadow"
+                KnobShadow.Parent = ToggleKnob
+                KnobShadow.Image = "rbxassetid://5554236805"
+                KnobShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                KnobShadow.ImageTransparency = 0.8
+                KnobShadow.Size = UDim2.new(1, 6, 1, 6)
+                KnobShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+                KnobShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+                KnobShadow.BackgroundTransparency = 1
+                KnobShadow.ZIndex = 0
 
                 local function updateState(state)
                     toggled = state
                     if toggled then
-                        TweenService:Create(ToggleButton, TweenInfo.new(0.2), {
+                        TweenService:Create(ToggleSwitch, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                             BackgroundColor3 = _G.Accent
                         }):Play()
-                        TweenService:Create(ToggleKnob, TweenInfo.new(0.2), {
-                            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                            Position = UDim2.new(1, isMobileLayout and -16 or -18, 0, 2)
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                            Position = UDim2.new(1, isMobileLayout and -(isMobileLayout and 25 or 28) or -(isMobileLayout and 25 or 28), 0.5, 0)
                         }):Play()
                     else
-                        TweenService:Create(ToggleButton, TweenInfo.new(0.2), {
+                        TweenService:Create(ToggleSwitch, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                             BackgroundColor3 = _G.Border
                         }):Play()
-                        TweenService:Create(ToggleKnob, TweenInfo.new(0.2), {
-                            BackgroundColor3 = _G.TextSecondary,
-                            Position = UDim2.new(0, 2, 0, 2)
+                        TweenService:Create(ToggleKnob, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                            Position = UDim2.new(0, isMobileLayout and 3 or 4, 0.5, 0)
                         }):Play()
                     end
                     pcall(callback, toggled)
                 end
 
-                ToggleButton.MouseButton1Click:Connect(function()
+                ToggleSwitch.MouseButton1Click:Connect(function()
                     updateState(not toggled)
                 end)
 
@@ -1174,6 +1119,9 @@ if IKAI then
                     if newText then
                         Label.Text = newText
                     end
+                end
+                function ToggleObject:Get()
+                    return toggled
                 end
                 return ToggleObject
             end
